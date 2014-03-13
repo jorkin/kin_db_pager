@@ -1,154 +1,88 @@
-<%
-'/*------------------------------------------------ Jorkin ◊‘∂®“Â¿‡ ∑≠“≥”≈ªØ¥˙¬Î
-' ********************************************************************* Àµ    √˜
-' * ¿¥‘¥: KinJAVA»’÷æ (http://jorkin.reallydo.com/article.asp?id=534)
-' * ◊Ó∫Û∏¸–¬: 2009-03-22
-' * µ±«∞∞Ê±æ: Ver: 1.09
-' ********************************************************************* Ãÿ…´π¶ƒ‹
-' * ”–∑Ω±„µƒ Eg()  µ¿˝,≤ª–Ë“™º«◊°√ø∏ˆ±‰¡øµƒ√˚≥∆,Œ™ø™∑¢’ﬂÃ·π©∑Ω±„.
-' * ISAPI_REWRITE π¶ƒ‹ø…“‘«·À… µœ÷æ≤Ã¨(Œ±æ≤Ã¨)∑≠“≥“‘º∞ajax∑≠“≥.
-' ********************************************************************* ∏¸–¬¿˙ ∑
-' * 2009-03-22
-' *   –ﬁ’˝qsliuliu∑¥¿°◊‘∂®“ÂPageParam∫Û∑÷“≥¥ÌŒÛBUG°£
-' * 2009-03-19
-' *   ÷ÿ“™∏¸–¬£¨”≈ªØ£¨Ã·∏ﬂÀŸ∂»°£
-' * 2009-02-14
-' *   ”≈ªØReWrite()∫Ø ˝£¨¥Û¥ÛÃ·∏ﬂ¡À–ß¬ °£
-' *   º”»Î–¬∫Ø ˝GetCondition()£¨”√¿¥◊ˆ∂‡Ãıº˛À—À˜£¨≤ªπ˝–Ë“™Jorkin_Function.aspø‚°£
-' *   ∑Ω∑®Œ™£∫GetCondition("±Ìµ•◊÷∂Œ√˚", "±Ìµ•±»Ωœ‘ÀÀ„∑˚", "±Ìµ•πÿº¸◊÷")°£
-' *   ±»Ωœ‘ÀÀ„∑˚ø…—°(<, =, >, <=, >=, <>, !=, !<, !>, like, not like)£¨πÿº¸◊÷ø…”√?±Ì æµ•◊÷∑˚£¨”√*±Ì æ¡„∏ˆªÚ∏¸∂‡◊÷∑˚°£
-' *   æØ∏Ê£°£°£°«∞Ã®“≥√Ê…˜”√£¨ª·œ‘¬∂ ˝æ›ø‚◊÷∂Œ√˚≥∆£¨ø…≤ŒøºGetCondition()◊‘–––ﬁ∏ƒ°£
-' * 2009-02-11
-' *   –°–ﬁ–°∏ƒ£¨º”«ø¡Àº∏∏ˆ≈–∂œ£¨∏¸–¬“ª–©Àµ√˜£¨œÎ”√¥Ê¥¢π˝≥Ãµƒ«Îœ¬‘ÿ“∂◊”∑÷“≥¿‡µƒsp_Util_Page.sql£¨±æ¿‡ÕÍ»´ºÊ»›°£
-' * 2008-11-26
-' *   ∏˘æ› ˝æ›ø‚¡¨Ω”◊‘∂Ø≈–∂œ ˝æ›ø‚¿‡–Õ°£
-' * 2008-09-09
-' *   –ﬁ’˝ Eg()  µ¿˝BUG°£
-' *   ºÃ–¯ÕÍ…∆“ª÷±¿√Œ≤µƒSelect Where In≈≈–Úπ¶ƒ‹£¨ªπ «Œ¥»´≤øÕÍ≥…°£(∑Ω∑®œÎ√¸√˚Œ™Kin_Db_Pager.OrderIn(◊÷∂Œ√˚,≈≈–Ú))
-' *   –ﬁ’˝¡Àº∏∏ˆ¬Ìª¢µº÷¬µƒ∆¥–¥¥ÌŒÛ°£ (-_-#)
-' *   º”»Î¡À◊‘∂®“Â∑≠“≥—˘ Ω ±…Ë∂®ø’÷µµƒ≈–∂œ°£
-' * 2008-08-28
-' *   ‘ˆº” Connect() ∑Ω∑®Ω¯–– ˝æ›ø‚¡¨Ω”£¨±» ActiveConnection ∫Õ ConnectionString ∏¸∞≤»´”––ß°£
-' *   –ﬁ’˝Bug: »Áπ˚ ˝◊÷Ã¯◊™INPUTøÚ‘⁄“ª∏ˆFORM¿Ô£¨ªÿ≥µ ±Ω´ª·Ω¯––Ã·Ωª±Ìµ•≤Ÿ◊˜°£
-' *   –ﬁ’˝Bug:  ˝◊÷Ã¯◊™INPUTøÚ≤ª÷ß≥÷◊‘∂®“ÂISAPI_REWRITE¬∑æ∂°£
-' *   –ﬁ’˝Bug:  π”√◊‘∂®“ÂSQL”Ôæ‰ ±∑÷“≥≥ˆ¥Ì°£
-' *   ÷ÿ–¥ Eg() —˘¿˝, π∆‰∏¸»›“◊±ª¿ÌΩ‚°£
-' *   …æ≥˝¥Û¡øŒﬁ”√¥˙¬Î.
-' * Ver: 1.03÷Æ«∞
-' *   “ª––¥˙¬Îº¥ø… µœ÷∞Ô÷˙,≤ª–Ë“™º«◊°À˘”–µƒ Ù–‘…Ë∂®°£
-' *   «Îœ» π”√ Eg() ≤Èø¥…˙≥…µƒ¥˙¬Î,Ω´∆‰»´—°∏¥÷∆∑≈»ÎASP¥˙¬ÎøÈƒ⁄º¥Œ™±æ∑÷“≥¿‡µƒ≤Ÿ◊˜ƒ£∞Â°£
-' ********************************************************************* √˘    –ª
-' * ∏––ª“‘œ¬¥Û¥Ûµƒ∑÷“≥¿‡ÀºœÎº∞¥˙¬Î:
-' * Sunrise_Chen (http://www.ccopus.com)
-' * ≤≈◊” (http://www.54caizi.org)
-' * ∑Á…˘ (http://www.fonshen.com)
-' * “∂◊” (http://www.yeeh.org)
-'*/-----------------------------------------------------------------------------
+Ôªø<%
+Session.CodePage = "65001"
+'Kin_Db_Pager 2.0.2 beta
 
 Class Kin_Db_Pager
-
-    '//-------------------------------------------------------------------------
-    '// ∂®“Â±‰¡ø ø™ º
-
-    Private oConn '//¡¨Ω”∂‘œÛ
-    Private sDbType '// ˝æ›ø‚¿‡–Õ
-    Private sTableName '//±Ì√˚
-    Private sPKey '//÷˜º¸
-    Private sFields '// ‰≥ˆµƒ◊÷∂Œ√˚
-    Private sOrderBy '//≈≈–Ú◊÷∑˚¥Æ
-    Private sSql '//µ±«∞µƒ≤È—Ø”Ôæ‰
-    Private sSqlString '//◊‘∂®“ÂSql”Ôæ‰
-    Private aCondition() '//≤È—ØÃıº˛( ˝◊È)
-    Private sCondition '//≤È—ØÃıº˛(◊÷∑˚¥Æ)
-    Private iPage '//µ±«∞“≥¬Î
-    Private iPageSize '//√ø“≥º«¬º ˝
-    Private iPageCount '//◊‹“≥ ˝
-    Private iRecordCount '//µ±«∞≤È—ØÃıº˛œ¬µƒº«¬º ˝
-    Private sPage '//µ±«∞“≥ ÃÊªª◊÷∑˚¥Æ
-    Private sPageCount '//◊‹“≥ ˝ ÃÊªª◊÷∑˚¥Æ
-    Private sRecordCount '//µ±«∞≤È—ØÃıº˛œ¬µƒº«¬º ˝ ÃÊªª◊÷∑˚¥Æ
-    Private sProjectName '//œÓƒø√˚
-    Private sVersion '//∞Ê±æ∫≈
-    Private bShowError '// «∑Òœ‘ æ¥ÌŒÛ–≈œ¢
-    Private bDistinct '// «∑Òœ‘ æŒ®“ªº«¬º
-    Private sPageInfo '//º«¬º ˝°¢“≥¬Îµ»–≈œ¢
-    Private sPageParam '//page≤Œ ˝√˚≥∆
-    Private iStyle '//∑≠“≥µƒ—˘ Ω
-    Private iPagerSize '//∑≠“≥∞¥≈•µƒ ˝÷µ
-    Private iCurrentPageSize '//µ±«∞“≥√Êº«¬º ˝¡ø
-    Private sReWrite '//”√ISAP REWRITE◊ˆµƒ¬∑æ∂,ø…”√Javascript∫Ø ˝ µœ÷AJAX∑≠“≥
-    Private iTableKind '//±Ìµƒ¿‡–Õ,  «∑Ò–Ë“™«ø÷∆º” [ ]
-    Private sFirstPage '// ◊“≥¡¥Ω” —˘ Ω
-    Private sPreviewPage '//…œ“ª“≥¡¥Ω” —˘ Ω
-    Private sCurrentPage '//µ±«∞“≥¡¥Ω” —˘ Ω
-    Private sListPage '//∑÷“≥¡–±Ì¡¥Ω” —˘ Ω
-    Private sNextPage '//œ¬“ª“≥¡¥Ω” —˘ Ω
-    Private sLastPage '//ƒ©“≥¡¥Ω” —˘ Ω
-    Private iPagerTop '//∑÷“≥¡–±ÌÕ∑Œ≤ ˝¡ø
-    Private iPagerGroup '//∂‡…Ÿ“≥◊ˆŒ™“ª◊È
-    Private sJumpPage '//∑÷“≥Ã¯◊™π¶ƒ‹
-    Private sJumpPageType '//∑÷“≥Ã¯◊™¿‡–Õ(ø…—°SELECTªÚINPUT)
-    Private sJumpPageAttr '//∑÷“≥Ã¯◊™∆‰À˚HTML Ù–‘
-    Private sUrl, sQueryString, x, y
-    Private sSpaceMark '//¡¥Ω”÷Æ«∞º‰∏Ù∑˚
-
-    '//∂®“Â±‰¡ø Ω· ¯
-    '//-------------------------------------------------------------------------
-
-    '//-------------------------------------------------------------------------
-    '// ¬º˛°¢∑Ω∑®: ¿‡≥ı ºªØ ¬º˛ ø™ º
+    Private iHaltStatus, sVersion
+    Private oConn, iTimeOut
+    Private sDbType, sTableName, bQuoteTable, iSpeed
+    Private bDistinct, sPKey, sFields, sCondition
+    Private sOrderByString, sOrderByStringRev, bOrderByPKey, bIsPKeySorted, sPKeyDefaultOrder
+    Private aCondition(), aOrderBy(), aFields()
+    Private iMaxRecords, iPage, iPageSize, iPageCount, iRecordCount, iMaxPageCount, iMaxRecordCount, iLastPageCount, iStartPosition, iEndPosition, iPageRecordCount
+    Private sQueryString, sUrl, sFormMethod
+    Private iPagerSize, iPagerTop, iPagerStyle
+    Private iPage1Size, iPageOffSet
+    Private sReWrite, sSeparator, sEllipsis, sPageParam, bPagerGroup, bLinkEllipsis
+    Private sFirstPage, sPreviousGroup, sPreviousPage, sCurrentPage, sListPage, sNextPage, sNextGroup, sLastPage
+    Private sPage, sPageCount, sRecordCount, sPagerInfo, sPagerExt
+    Private sSqlString, oRecordSet, oCommand
+    Private iCacheType, iCacheTimeOut
+    Private Err
 
     Private Sub Class_Initialize()
-        ReDim aCondition( -1)
-        sProjectName = "Jorkin &#25968;&#25454;&#24211;&#20998;&#39029;&#31867;  Kin_Db_Pager"
+        On Error Resume Next
+        Randomize()
+        sVersion = "Jorkin's Classic ASP Pagination Class Ver: 2.0.2 beta Build:20101010 Coding By Jorkin"
+        iHaltStatus = -1
         sDbType = "MSSQL"
-        sVersion = "Ver: 1.09 Build: 090322"
+        bQuoteTable = True
+        sTableName = Null
         sPKey = "ID"
         sFields = "*"
         sCondition = ""
-        sOrderBy = ""
-        sSqlString = ""
-        iPageSize = 20
+        ReDim aCondition( -1)
+        ReDim aOrderBy( -1)
+        ReDim aFields(1)
+        bOrderByPKey = False
+        bIsPKeySorted = False
+        iMaxRecords = -1
         iPage = 1
-        iRecordCount = Null
+        iPageSize = 20
+		iPage1Size = Null
+		iPageOffSet = 0
         iPageCount = Null
-        bShowError = True
-        bDistinct = False
+        iMaxPageCount = Null
+        iRecordCount = Null
+        iMaxRecordCount = Null
+        sFormMethod = "GET"
+        sPageParam = "page"
+        SetPageParam(sPageParam)
+        iPagerStyle = 0
+        sPKeyDefaultOrder = "ASC"
+        iSpeed = 1
+        sOrderByString = ""
+        sFirstPage = "È¶ñÈ°µ"
+        sPreviousPage = "‰∏ä‰∏ÄÈ°µ"
+        sPreviousGroup = "‰∏ä‰∏ÄÁªÑ"
+        sCurrentPage = "{$Kin_CurrentPage}"
+        sListPage = "{$Kin_ListPage}"
+        sNextPage = "‰∏ã‰∏ÄÈ°µ"
+        sNextGroup = "‰∏ã‰∏ÄÁªÑ"
+        sLastPage = "Êú´È°µ"
         iPagerTop = 0
+        iPagerSize = 9
         sPage = "{$Kin_Page}"
         sPageCount = "{$Kin_PageCount}"
         sRecordCount = "{$Kin_RecordCount}"
-        sPageInfo = "&#20849;&#26377;  {$Kin_RecordCount} &#26465;&#35760;&#24405;  &#39029;&#27425; : {$Kin_Page}/{$Kin_PageCount}"
-        sPageParam = "page"
-        setPageParam(sPageParam)
-        iStyle = 29252888
-        iTableKind = 0
-        iPagerSize = 7
-        sFirstPage = "[&#39318;&#39029;]"
-        sPreviewPage = "[&#19978;&#19968;&#39029;]"
-        sCurrentPage = "[{$CurrentPage}]"
-        sListPage = "[{$ListPage}]"
-        sNextPage = "[&#19979;&#19968;&#39029;]"
-        sLastPage = "[&#26411;&#39029;]"
-        sJumpPage = ""
-        sJumpPageType = "SELECT"
-        sSpaceMark = " "
+		sPagerList = "{$Kin_FirstPage} {$Kin_PreviousPage} {$Kin_ListPage} {$Kin_NextPage} {$Kin_LastPage}"
+        sPagerInfo = "ÂÖ±Êúâ {$Kin_RecordCount} Êù°ËÆ∞ÂΩï Á¨¨ {$Kin_Page} È°µ/ÂÖ± {$Kin_PageCount} È°µ"
+        sSeparator = ""
+        sEllipsis = "‚Ä¶"
+        iTimeOut = 222
+        bPagerGroup = False
+        bLinkEllipsis = False
+        iCacheType = -1
+        iCacheTimeOut = 777
+        bDistinct = False
+        sPagerExt = ""
+		iStartPosition = Null
     End Sub
-
-    '//¿‡Ω· ¯ ¬º˛
 
     Private Sub Class_Terminate()
+        oConn.Close()
         Set oConn = Nothing
     End Sub
-
-    '// ¬º˛°¢∑Ω∑®: ¿‡≥ı ºªØ ¬º˛ Ω· ¯
-    '//-------------------------------------------------------------------------
-
-    '//-------------------------------------------------------------------------
-    '//∫Ø ˝°¢∑Ω∑® ø™ º
-
-    'π¶ƒ‹:ASP¿ÔµƒIIF
-    '¿¥‘¥:http://jorkin.reallydo.com/article.asp?id=26
 
     Private Function IIf(bExp1, sVal1, sVal2)
         If (bExp1) Then
@@ -158,993 +92,1318 @@ Class Kin_Db_Pager
         End If
     End Function
 
-    'π¶ƒ‹:÷ª»° ˝◊÷
-    '¿¥‘¥:http://jorkin.reallydo.com/article.asp?id=395
-
-    Private Function Bint(sValue)
+    Private Function to_Int(v)
         On Error Resume Next
-        Bint = 0
-        Bint = Fix(CDbl(sValue))
+        to_Int = 0
+        to_Int = Int(CDbl(v))
     End Function
 
-    'π¶ƒ‹:≈–∂œ «∑Ò «ø’÷µ
-    '¿¥‘¥:http://jorkin.reallydo.com/article.asp?id=386
+    Public Function to_Str(v)
+        On Error Resume Next
+        to_Str = Trim(to_String(v))
+    End Function
 
-    Private Function IsBlank(byref TempVar)
+    Public Function to_String(v)
+        On Error Resume Next
+        If IsArray(v) Then v = Join(v)
+        to_String = ""
+        to_String = CStr(v)
+    End Function
+
+    Private Function to_Bool(v)
+        On Error Resume Next
+        to_Bool = False
+        If UCase(to_Str(v)) = "TRUE" Then
+            to_Bool = True
+        Else
+            to_Bool = CBool(v)
+        End If
+    End Function
+
+    Private Function IsBlank(v)
         IsBlank = False
-        Select Case VarType(TempVar)
-            Case 0, 1
-                IsBlank = True
-            Case 8
-                If Len(TempVar) = 0 Then
-                    IsBlank = True
-                End If
-            Case 9
-                tmpType = TypeName(TempVar)
-                If (tmpType = "Nothing") Or (tmpType = "Empty") Then
-                    IsBlank = True
-                End If
-            Case 8192, 8204, 8209
-                If UBound(TempVar) = -1 Then
-                    IsBlank = True
-                End If
+        Select Case VarType(v)
+            Case 0, 1 : IsBlank = True
+            Case 8 : If Len(v) = 0 Then IsBlank = True
+            Case 9 : tmpType = TypeName(v) : If (tmpType = "Nothing") Or (tmpType = "Empty") Then IsBlank = True
+            Case 8192, 8204, 8209 : If UBound(v) = -1 Then IsBlank = True
         End Select
     End Function
 
-    '//ºÏ≤È ˝æ›ø‚¡¨Ω” «∑Òø…”√
-
-    Public Function Connect(o)
-        If TypeName(o) <> "Connection" Then
-            doError "Œﬁ–ßµƒ ˝æ›ø‚¡¨Ω”°£"
-        Else
-            If o.State = 1 Then
-                Set oConn = o
-                sDbType = GetDbType(oConn)
-            Else
-                doError " ˝æ›ø‚¡¨Ω”“—πÿ±’°£"
-            End If
-        End If
-    End Function
-
-    '//¥¶¿Ì¥ÌŒÛ–≈œ¢
-
-    Public Sub doError(s)
-        On Error Resume Next
-		If Not bShowError Then Exit Sub
-        Dim nRnd
-        Randomize()
-        nRnd = CLng(Rnd() * 29252888)
-        With Response
-            .Clear
-            .Expires = 0
-            .Write "<br />"
-            .Write "<div style=""width:100%; font-size:12px; cursor:pointer;line-height:150%"">"
-            .Write "<label onClick=""ERRORDIV" & nRnd & ".style.display=(ERRORDIV" & nRnd & ".style.display=='none'?'':'none')"">"
-            .Write "<span style=""background-color:820222;color:#FFFFFF;height:23px;font-size:14px;"">°º Kin_Db_Pager &#25552;&#31034;&#20449;&#24687;  ERROR °Ω</span><br />"
-            .Write "</label>"
-            .Write "<div id=""ERRORDIV" & nRnd & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
-            .Write "<span style=""color:#FF0000;"">Description</span> " & Server.HTMLEncode(s) & "<br />"
-            .Write "<span style=""color:#FF0000;"">Provider</span> " & sProjectName & "<br />"
-            .Write "<span style=""color:#FF0000;"">Version</span> " & sVersion & "<br />"
-            .Write "<span style=""color:#FF0000;"">Information</span> Coding By <a href=""http://jorkin.reallydo.com"">Jorkin</a>.<br />"
-            .Write "<img width=""0"" height=""0"" src=""http://img.users.51.la/2782986.asp"" style=""display:none"" /></div>"
-            .Write "</div>"
-            .Write "<br />"
-            .End()
-        End With
-    End Sub
-
-    '//≤˙…˙∑÷“≥µƒSQL”Ôæ‰
-
-    Public Function getSql()
-        If Not IsBlank(sSqlString) Then
-            getSql = sSqlString
-            Exit Function
-        End If
-        Dim iStart, iEnd
-        Call makeCondition()
-        iStart = ( iPage - 1 ) * iPageSize
-        iEnd = iStart + iPageSize
-        Select Case sDbType
-            Case "MSSQL"
-                getSql = " SELECT " & IIf(bDistinct, "DISTINCT", "") & " " & sFields & " FROM " & TableFormat(sTableName) & " " _
-                         & " WHERE [" & sPKey & "] IN ( " _
-                         & "   SELECT TOP " & iEnd & " [" & sPKey & "] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
-                         & " )"
-                If iPage>1 Then
-                    getSql = getSql & " AND [" & sPKey & "] NOT IN ( " _
-                             & "   SELECT TOP " & iStart & " [" & sPKey & "] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
-                             & " )"
-                End If
-                getSql = getSql & " " & sOrderBy
-            Case "MYSQL"
-                getSql = "SELECT " & sFields & " FROM " & TableFormat(sTableName)& " " & sCondition & " " & sOrderBy & " LIMIT "&(iPage -1) * iPageSize&"," & iPageSize
-            Case "MSSQLPRODUCE"
-            Case "ACCESS"
-                getSql = "SELECT " & IIf(bDistinct, "DISTINCT ", " ") & " Top " & iPage * iPageSize & " " & sFields & " FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy
-            Case Else
-                getSql = "SELECT " & sFields & " FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy
-        End Select
-    End Function
-
-    '//≤˙…˙Ãıº˛◊÷∑˚¥Æ
-
-    Private Sub makeCondition()
-        If Not IsBlank(sCondition) Then Exit Sub
-        If UBound(aCondition)>= 0 Then
-            sCondition = " WHERE " & Join(aCondition, " AND ")
-        End If
-    End Sub
-
-    '//º∆À„º«¬º ˝
-
-    Private Sub CaculateRecordCount()
-        On Error Resume Next
-        Dim oRs
-        If Not IsBlank(sSqlString) Then
-            sSql = "SELECT COUNT(0) FROM (" & sSqlString & ")"
-        Else
-            Call makeCondition()
-            sSql = "SELECT COUNT(0) FROM " & TableFormat(sTableName) & " " & IIf(IsBlank(sCondition), "", sCondition)
-        End If
-        Set oRs = oConn.Execute( sSql )
-        If Err Then
-            doError Err.Description
-        End If
-        iRecordCount = oRs.Fields.Item(0).Value
-        Set oRs = Nothing
-    End Sub
-
-    '//º∆À„“≥ ˝
-
-    Private Sub CaculatePageCount()
-        If IsNull(iRecordCount) Then CaculateRecordCount()
-        If iRecordCount = 0 Then
-            iPageCount = 0
-            Exit Sub
-        End If
-        iPageCount = Abs( Int( 0 - (iRecordCount / iPageSize) ) )
-    End Sub
-
-    '//…Ë÷√“≥¬Î
-
-    Private Function setPage(n)
-        iPage = Bint(n)
-        If iPage < 1 Then iPage = 1
-    End Function
-
-    '//‘ˆº”Ãıº˛
-
-    Public Sub AddCondition(s)
-        If IsBlank(s) Then Exit Sub
-        ReDim Preserve aCondition(UBound(aCondition) + 1)
-        aCondition(UBound(aCondition)) = s
-    End Sub
-
-    '//≈–∂œ“≥√Ê¡¨Ω”
-
-    Private Function ReWrite(n)
-        n = Bint(n)
-        If Not IsBlank(sRewrite) Then
-            ReWrite = Replace(sReWrite, "*", n)
-        Else
-            ReWrite = sUrl & IIf(n>0, n, "")
-        End If
-    End Function
-
-    '// ˝æ›ø‚±Ìº” []
-
-    Private Function TableFormat(s)
-        Select Case iTableKind
-            Case 0
-                TableFormat = "[" & s & "]"
-            Case 1
-                TableFormat = " " & s & " "
-        End Select
-    End Function
-
-    '//∞¥Where InÀ≥–ÚΩ¯––≈≈–Ú
-
-    Public Function OrderIn(s, sOrderIn)
-        OrderIn = " "
-        If Not IsBlank(s) And Not IsBlank(sOrderIn) Then
-            sOrderIn = Replace(sOrderIn, " ", "")
-            sOrderIn = Replace(sOrderIn, "'", "")
-            sOrderIn = "'" & sOrderIn & "'"
-            Select Case sDbType
-                Case "MYSQL"
-                    OrderIn = "FIND_IN_SET(" & s & ", " & sOrderIn & ")"
-                Case "ACCESS"
-                    OrderIn = "INSTR(','+CStr(" & sOrderIn & ")+',',','+CStr(" & s & ")+',')"
-                Case Else
-                    OrderIn = "PATINDEX('% ' + CONVERT(nvarchar(820222), " & s & ") + ' %',' ' + CONVERT(nvarchar(820222), Replace(" & sOrderIn & ", ',', ' , ')) + ' ')"
-            End Select
-        End If
-        OrderIn = OrderIn & " "
-    End Function
-
-    '//∏˘æ› ˝æ›ø‚¡¨Ω”≈–∂œ ˝æ›ø‚¿‡–Õ
-
-    Private Function GetDbType(o)
-        Select Case (o.Provider)
-            Case "MSDASQL.1", "SQLOLEDB.1", "SQLOLEDB"
-                GetDbType = "MSSQL"
-            Case "MSDAORA.1", "OraOLEDB.Oracle"
-                GetDbType = "ORACLE"
-            Case "Microsoft.Jet.OLEDB.4.0"
-                GetDbType = "ACCESS"
-        End Select
-    End Function
-
-    '//…Ë∂®∑÷“≥±‰¡øµƒ√˚≥∆
-
-    Private Function setPageParam(s)
-        sQueryString = ""
-        For Each x In Request.QueryString
-            If x <> sPageParam Then
-                For Each y In Request.QueryString(x)
-                    sQueryString = "&" & x & "=" & Server.URLEncode(y) & sQueryString
-                Next
+    Private Function InArray( sValue, aArray )
+        Dim i
+        InArray = False
+        For i = 0 To UBound( aArray )
+            If StrComp(aArray(i), sValue, 1) = 0 Then
+                InArray = True
+                Exit For
             End If
         Next
-        sUrl = Request.ServerVariables("URL") & "?" & IIf(IsBlank(sQueryString), "", Mid(sQueryString, 2) & "&") & sPageParam & "="
     End Function
 
-    '//∫Ø ˝°¢∑Ω∑® Ω· ¯
-    '//-------------------------------------------------------------------------
+    Private Function Str4Sql(v)
+        Str4Sql = Replace(to_Str(v), "'", "''")
+    End Function
 
-    '//-------------------------------------------------------------------------
-    '// ‰»Î Ù–‘ ø™ º
+    Private Sub doError(s)
+        On Error Resume Next
+		Select Case iHaltStatus
+		Case -1, 0
+			Randomize()
+			Dim nRnd, i
+			nRnd = to_Int(Rnd() * 29252888)
+			With Response
+				.Clear
+				.Write "<div style=""width:98%;margin:auto;font-size:12px; cursor:pointer;line-height:150%"">"
+				.Write "<label onClick=""ERRORDIV" & nRnd & ".style.display=(ERRORDIV" & nRnd & ".style.display=='none'?'':'none')"">"
+				.Write "<span style=""background-color:#820222;color:#FFFFFF;height:23px;font-size:14px;"">„Äñ Kin_Pagination &#25552;&#31034;&#20449;&#24687;  ERROR „Äó</span>"
+				.Write "</label>"
+				.Write "<div id=""ERRORDIV" & nRnd & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
+				If Not IsBlank(s) Then
+					.Write "<span style=""color:#FF0000;"">Kin_Pagination.Error:</span> " & Server.HTMLEncode(s) & "<br />"
+				End If
+				If IsObject(s) Then
+					If s Is Err Then
+						.Write "<span style=""color:#FF0000;"">Err.Description:</span> " & Err.Description & "<br />"
+						.Write "<span style=""color:#FF0000;"">Err.Source:</span> " & Err.Source & "<br />"
+					End If
+				End If
+				For i = 0 To oConn.Errors.Count -1
+					.Write "<span style=""color:#FF0000;"">Connection.Error:</span> " & oConn.Errors.Item(i) & "<br />"
+				Next
+				If Not IsBlank(sSqlString) Then
+					.Write "<span style=""color:#FF0000;"">Kin_Pagination.GetSql:</span> " & sSqlString & "<br />"
+				End If
+				.Write "<span style=""color:#FF0000;"">Kin_Pagination.Information:</span> " & sVersion & "<br />"
+				.Write "<img width=""0"" height=""0"" src=""http://img.users.51.la/2782986.asp"" style=""display:none"" /></div>"
+				.Write "</div><br />"
+				If iHaltStatus = -1 Then .End()
+			End With
+	
 
-    '//∂®“Â¡¨Ω”∂‘œÛ
+		Case Else
+		
+		End Select
 
-    Public Property Set ActiveConnection(o)
-        Set oConn = o
-        sDbType = GetDbType(oConn)
+    End Sub
+
+    Property Let TimeOut(v)
+        iTimeOut = to_Int(v)
     End Property
 
-    '//¡¨Ω”◊÷∑˚¥Æ
+    Public Sub Connect(v)
+        On Error Resume Next
+        If TypeName(v) = "Connection" Then
+            Set oConn = v
+            If oConn.CommandTimeout < iTimeOut Or oConn.ConnectionTimeout < iTimeOut Then
+                If oConn.State = 1 Then v.Close()
+                oConn.CommandTimeout = iTimeOut
+                oConn.ConnectionTimeout = iTimeOut
+                oConn.Open()
+            End If
+            SetDbType(GetDbType(oConn))
+        Else
+            doError "[Connection.Closed]"
+        End If
+        If Err Then Err.Clear
+    End Sub
 
-    Public Property Let ConnectionString(s)
+    Property Set ActiveConnection(v)
+        Set oConn = v
+        SetDbType(GetDbType(oConn))
+    End Property
+
+    Property Let ConnectionString(v)
+        On Error Resume Next
         Set oConn = Server.CreateObject("ADODB.Connection")
-        oConn.ConnectionString = s
+        oConn.ConnectionString = v
+        oConn.CommandTimeout = iTimeOut
+        oConn.ConnectionTimeout = iTimeOut
         oConn.Open()
-        sDbType = GetDbType(oConn)
+        If Err Then doError Err.Description
+        SetDbType(GetDbType(oConn))
     End Property
 
-    '//∂®“Â ˝æ›ø‚¿‡–Õ
-
-    Public Property Let DBType(s)
-        sDBType = UCase(s)
-        Select Case sDBType
-            Case "ACCESS", "ACC", "AC"
-                sDBType = "ACCESS"
-            Case "MSSQL", "SQL"
-                sDBType = "MSSQL"
-            Case "MYSQL"
-                sDBType = "MYSQL"
-            Case "ORACLE"
-                sDBType = "ORACLE"
-            Case "PGSQL"
-                sDBType = "PGSQL"
-            Case "MSSQLPRODUCE", "MSSQLPR", "MSSQL_PR", "PR"
-                sDBType = "MSSQLPRODUCE"
-            Case Else
-                If TypeName(oConn) = "Connection" Then
-                    sDBType = GetDbType(oConn)
-                End If
-        End Select
-    End Property
-
-    '//∂®“Â  ◊“≥ —˘ Ω
-
-    Public Property Let FirstPage(s)
-        sFirstPage = s
-    End Property
-
-    '//∂®“Â …œ“ª“≥ —˘ Ω
-
-    Public Property Let PreviewPage(s)
-        sPreviewPage = s
-    End Property
-
-    '//∂®“Â µ±«∞“≥ —˘ Ω
-
-    Public Property Let CurrentPage(s)
-        sCurrentPage = s
-    End Property
-
-    '//∂®“Â ∑÷“≥¡–±Ì“≥ —˘ Ω
-
-    Public Property Let ListPage(s)
-        sListPage = s
-    End Property
-
-    '//∂®“Â œ¬“ª“≥ —˘ Ω
-
-    Public Property Let NextPage(s)
-        sNextPage = s
-    End Property
-
-    '//∂®“Â ƒ©“≥ —˘ Ω
-
-    Public Property Let LastPage(s)
-        sLastPage = s
-    End Property
-
-    '//∂®“Âº‰∏Ù∑˚£¨ƒ¨»œ∞ÎΩ«ø’∏Ò
-
-    Public Property Let SpaceMark(s)
-        sSpaceMark = s
-    End Property
-
-    '//∂®“Â ¡–±Ì«∞∫Û∂‡º”º∏“≥
-
-    Public Property Let PagerTop(n)
-        iPagerTop = Bint(n)
-    End Property
-
-    '//∂®“Â≤È—Ø±Ì√˚
-
-    Public Property Let TableName(s)
-        sTableName = s
-        '//»Áπ˚∑¢œ÷±Ì√˚∞¸∫¨ ([. £¨ƒ«√¥æÕ≤ª“™”√ []
-        If InStr(s, "(")>0 Then iTableKind = 1
-        If InStr(s, "[")>0 Then iTableKind = 1
-        If InStr(s, ".")>0 Then iTableKind = 1
-    End Property
-
-    '//∂®“Â–Ë“™ ‰≥ˆµƒ◊÷∂Œ√˚
-
-    Public Property Let Fields(s)
-        sFields = s
-    End Property
-
-    '//∂®“Â÷˜º¸
-
-    Public Property Let PKey(s)
-        If Not IsBlank(s) Then sPKey = s
-    End Property
-
-    '//∂®“Â≈≈–ÚπÊ‘Ú
-
-    Public Property Let OrderBy(s)
-        If Not IsBlank(s) Then sOrderBy = " ORDER BY " & s & " "
-    End Property
-
-    '//∂®“Â√ø“≥µƒº«¬ºÃı ˝
-
-    Public Property Let PageSize(s)
-        iPageSize = Bint(s)
-        iPageSize = IIf(iPageSize<1, 1, iPageSize)
-    End Property
-
-    '//∂®“Âµ±«∞“≥¬Î
-
-    Public Property Let Page(n)
-        setPage Bint(n)
-    End Property
-
-    '//∂®“Âµ±«∞“≥¬Î(Õ¨Property Page)
-
-    Public Property Let AbsolutePage(n)
-        setPage Bint(n)
-    End Property
-
-    '//◊‘∂®“Â≤È—Ø”Ôæ‰
-
-    Public Property Let Sql(s)
-        sSqlString = s
-    End Property
-
-    '// «∑ÒDISTINCT
-
-    Public Property Let Distinct(b)
-        bDistinct = b
-    End Property
-
-    '//…Ë∂®∑÷“≥±‰¡øµƒ√˚≥∆
-
-    Public Property Let PageParam(s)
-        sPageParam = LCase(s)
-        If IsBlank(sPageParam) Then sPageParam = "page"
-        setPageParam(sPageParam)
-    End Property
-
-    '//—°‘Ò∑÷“≥µƒ—˘ Ω,ø…“‘∫Û√Ê◊‘º∫ÃÌº”–¬µƒ
-
-    Public Property Let Style(s)
-        iStyle = Bint(s)
-    End Property
-
-    '//∑÷“≥¡–±Ìœ‘ æ ˝¡ø
-
-    Public Property Let PagerSize(n)
-        iPagerSize = Bint(n)
-    End Property
-
-    '//◊‘∂®“ÂISAPI_REWRITE¬∑æ∂ * Ω´±ªÃÊªªŒ™µ±«∞“≥ ˝
-    '// π”√Javascript ±«Î◊¢“‚±æ∑÷“≥¿‡”√À´“˝∫≈“˝”√◊÷∑˚¥Æ,«Îœ»¥¶¿Ì.
-
-    Public Property Let ReWritePath(s)
-        sReWrite = s
-    End Property
-
-    '//«ø÷∆TABLE¿‡–Õ
-
-    Public Property Let TableKind(n)
-        iTableKind = n
-    End Property
-
-    '//◊‘∂®“Â∑÷“≥–≈œ¢
-
-    Public Property Let PageInfo(s)
-        sPageInfo = s
-    End Property
-
-    '//∂®“Â“≥√ÊÃ¯◊™¿‡–Õ
-
-    Public Property Let JumpPageType(s)
-        sJumpPageType = UCase(s)
-        Select Case sJumpPageType
-            Case "INPUT", "SELECT"
-            Case Else
-                sJumpPageType = "SELECT"
-        End Select
-    End Property
-
-    '//∂®“Â“≥√ÊÃ¯◊™¡¥Ω”∆‰À˚HTML Ù–‘
-
-    Public Property Let JumpPageAttr(s)
-        sJumpPageAttr = s
-    End Property
-
-    '// ‰»Î Ù–‘ Ω· ¯
-    '//-------------------------------------------------------------------------
-
-    '//-------------------------------------------------------------------------
-    '// ‰≥ˆ Ù–‘ ø™ º
-
-    '// ‰≥ˆ¡¨Ω””Ôæ‰
-
-    Public Property Get ConnectionString()
+    Property Get ConnectionString()
         ConnectionString = oConn.ConnectionString
     End Property
 
-    '// ‰≥ˆ¡¨Ω”∂‘œÛ
-
-    Public Property Get Conn()
+    Property Get Conn()
         Set Conn = oConn
     End Property
 
-    '// ‰≥ˆ ˝æ›ø‚¿‡–Õ
+    Private Function GetDbType(v)
+        On Error Resume Next
+        Dim sConnectionProvider : sConnectionProvider = v.Provider
+        Select Case (sConnectionProvider)
+            Case "MSDASQL.1", "SQLOLEDB.1", "SQLOLEDB" : GetDbType = "MSSQL"
+            Case "MSDAORA.1", "OraOLEDB.Oracle" : GetDbType = "ORACLE"
+            Case "Microsoft.Jet.OLEDB.4.0" : GetDbType = "ACCESS"
+            Case Else : GetDbType = "ACCESS"
+        End Select
+    End Function
 
-    Public Property Get DBType()
-        DBType = sDBType
+    Private Sub SetDbType(v)
+        sDbType = UCase(to_Str(v))
+        Select Case sDbType
+            Case "MSSQL", "SQL", "SQLSERVER" : sDBType = "MSSQL"
+            Case "MYSQL" : sDBType = "MYSQL" : bQuoteTable = False
+            Case "ORACLE" : sDBType = "ORACLE" : bQuoteTable = False
+            Case "PGSQL" : sDBType = "PGSQL"
+            Case "MSSQLPRODUCE", "MSSQLPR", "MSSQL_PR", "PR", "PRODUCE" : sDBType = "MSSQLPRODUCE"
+            Case Else : sDBType = "ACCESS"
+        End Select
+    End Sub
+
+    Property Let DbType(v)
+        SetDbType(v)
     End Property
 
-    '// ‰≥ˆ≤È—Ø±Ì√˚
+    Property Get DbType()
+        DbType = sDbType
+    End Property
 
-    Public Property Get TableName()
+    Property Let Distinct(v)
+        bDistinct = to_Bool(v)
+    End Property
+
+    Property Let TableName(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If CheckColumn(sTMPString)(0) Then
+            sTableName = sTMPString
+            If InStr(v, "[") > 0 Then bQuoteTable = False
+            If InStr(v, "(") > 0 Then bQuoteTable = False
+            If InStr(v, ".") > 0 Then bQuoteTable = False
+            If InStr(v, ",") > 0 Then bQuoteTable = False
+            If InStr(v, " ") > 0 Then bQuoteTable = False
+        Else
+            doError ".TableName = """ & sTMPString & """ ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        End If
+    End Property
+
+    Property Let QuoteTable(v)
+        bQuoteTable = to_Bool(v)
+    End Property
+
+    Private Function QuoteName(v)
+        QuoteName = IIf(bQuoteTable, "[" & v & "]", " " & v & " ")
+    End Function
+
+    Private Function FormatColumn(v)
+        FormatColumn = to_String(Replace(Replace(Replace(to_Str(v), vbTab, " "), vbCr, " "), vbLf, " "))
+    End Function
+
+    Public Function CheckColumn(v)
+        Dim bMatching, bMatchingAll, sTmpString1, sTmpString2, i, j
+        Dim aCommaArray, aSingleQuoteArray, iUboundCommaArray, iUboundSingleQuoteArray
+        ReDim aFieldsArray( -1)
+        v = to_String(v)
+        If Not IsBlank(to_Str(v)) Then
+            aCommaArray = Split(v, ",")
+            iUboundCommaArray = UBound(aCommaArray)
+            bMatchingAll = True
+            For i = 0 To iUboundCommaArray
+                If Not IsBlank(to_Str(sTmpString1)) Then sTmpString1 = sTmpString1 & ","
+                sTmpString1 = sTmpString1 & aCommaArray(i)
+                aSingleQuoteArray = Split(sTmpString1, "'")
+                iUboundSingleQuoteArray = UBound(aSingleQuoteArray)
+                sTmpString2 = ""
+                bMatchingAll = True
+                bMatching = False
+                If iUboundSingleQuoteArray Mod 2 = 0 Then
+                    For j = 0 To iUboundSingleQuoteArray Step 2
+                        sTmpString2 = sTmpString2 & aSingleQuoteArray(j)
+                    Next
+                    If (InStr(sTmpString2, "(") <= InStr(sTmpString2, ")")) And (UBound(Split(sTmpString2, "(")) = UBound(Split(sTmpString2, ")"))) Then bMatching = True
+                End If
+                bMatchingAll = bMatchingAll And bMatching
+                If bMatchingAll And Not IsBlank(to_Str(sTmpString1)) Then
+                    j = UBound(aFieldsArray) + 1
+                    ReDim Preserve aFieldsArray(j)
+                    aFieldsArray(j) = sTmpString1
+                    sTmpString1 = ""
+                    bMatchingAll = False
+                    If i = iUboundCommaArray Then bMatchingAll = True
+                End If
+            Next
+            CheckColumn = Array(bMatchingAll, aFieldsArray)
+        Else
+            CheckColumn = Array(False, Array())
+        End If
+    End Function
+
+    Property Get TableName()
         TableName = sTableName
     End Property
 
-    '// ‰≥ˆ–Ë“™ ‰≥ˆµƒ◊÷∂Œ√˚
+	Property Let Pkey(v)
+		Call setPKey(v)
+	End Property
 
-    Public Property Get Fields()
-        Fields = sFields
-    End Property
+	Property Let PrimaryKey(v)
+		Call setPKey(v)
+	End Property
+	
+    Private Sub setPKey(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If CheckColumn(sTMPString)(0) Then
+            sPKey = sTMPString
+            If IsBlank(sPKey) Then sPKey = "ID"
+            If Left(sPKey, 1) = "[" And Right(sPKey, 1) = "]" Then sPKey = to_Str(Replace(Replace(sPKey, "[", ""), "]", ""))
+        Else
+            doError ".PKey = """ & sTMPString & """ ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        End If
+    End Sub
 
-    '// ‰≥ˆ÷˜º¸
-
-    Public Property Get PKey()
+    Property Get PKey()
         PKey = sPKey
     End Property
 
-    '// ‰≥ˆ≈≈–ÚπÊ‘Ú
-
-    Public Property Get OrderBy()
-        OrderBy = sOrderBy
+    Property Let Fields(v)
+        If IsBlank(to_Str(v)) Then v = "*"
+        ReDim aFields( -1)
+        ReDim aFieldString( -1)
+        Call AddFields(v)
     End Property
 
-    '//»°µ√µ±«∞Ãıº˛œ¬µƒº«¬º ˝
-
-    Public Property Get RecordCount()
-        If IsNull(iRecordCount) Then CaculateRecordCount()
-        RecordCount = iRecordCount
-    End Property
-
-    '//»°µ√√ø“≥º«¬º ˝
-
-    Public Property Get PageSize()
-        PageSize = iPageSize
-    End Property
-
-    '//»°µ√µ±«∞≤È—ØµƒÃıº˛
-
-    Public Property Get Condition()
-        If IsBlank(sCondition) Then makeCondition()
-        Condition = sCondition
-    End Property
-
-    '//»°µ√µ±«∞“≥¬Î
-
-    Public Property Get Page()
-        Page = iPage
-    End Property
-
-    '//»°µ√µ±«∞“≥¬Î
-
-    Public Property Get AbsolutePage()
-        AbsolutePage = iPage
-    End Property
-
-    '//»°µ√◊‹“≥ ˝
-
-    Public Property Get PageCount()
-        If IsNull(iPageCount) Then CaculatePageCount()
-        PageCount = iPageCount
-    End Property
-
-    '//»°µ√µ±«∞“≥º«¬º ˝
-
-    Public Property Get CurrentPageSize()
-        If IsNull(iRecordCount) Then CaculateRecordCount()
-        If IsNull(iPageCount) Then CaculatePageCount()
-        CurrentPageSize = IIf(iRecordCount>0, IIf(iPage = iPageCount, iRecordCount - (iPage -1) * iPageSize, iPageSize), 0)
-    End Property
-
-    '//µ√µΩ∑÷“≥∫Ûµƒº«¬ººØ
-
-    Public Property Get RecordSet()
-        On Error Resume Next
-        Select Case sDbType
-            Case "MSSQL" '// MSSQL2000
-                sSql = getSql()
-                Set RecordSet = oConn.Execute( sSql )
-            Case "MSSQLPRODUCE" '// SqlServer2000 ˝æ›ø‚¥Ê¥¢π˝≥Ã∞Ê, ø… π”√“∂◊”µƒSQL°£
-                Set oRs = Server.CreateObject("ADODB.RecordSet")
-                Set oCommand = Server.CreateObject("ADODB.Command")
-                oCommand.CommandType = 4
-                oCommand.ActiveConnection = oConn
-                oCommand.CommandText = "sp_Util_Page"
-                oCommand.Parameters(1) = 0
-                oCommand.Parameters(2) = iPage
-                oCommand.Parameters(3) = iPageSize
-                oCommand.Parameters(4) = sPkey
-                oCommand.Parameters(5) = sFields
-                oCommand.Parameters(6) = sTableName
-                oCommand.Parameters(7) = Join(aCondition, " AND ")
-                oCommand.Parameters(8) = Mid(sOrderBy, 11)
-                oRs.CursorLocation = 3
-                oRs.LockType = 1
-                oRs.Open oCommand
-            Case "MYSQL" 'MYSQL ˝æ›ø‚£¨≤ªª·£¨‘› ±ø’◊≈°£
-                sSql = getSql()
-                Set oRs = oConn.Execute(sSql)
-            Case Else '∆‰À˚«Èøˆ∞¥◊Ó‘≠ ºµƒADO∑Ω∑®¥¶¿Ì£¨∞¸¿®ACCESS°£
-                sSql = getSql()
-                Set RecordSet = Server.CreateObject ("ADODB.RecordSet")
-                RecordSet.Open sSql, oConn, 1, 1, &H0001
-                RecordSet.PageSize = iPageSize
-                If RecordSet.AbsolutePage <> -1 Then
-                    iPage = IIf(iPage > RecordSet.PageCount, RecordSet.PageCount, iPage)
-                    RecordSet.AbsolutePage = iPage
+    Private Sub AddFields(v)
+        Dim a, a1, a2, a3, i, j, k, l
+        v = FormatColumn(v)
+        a = CheckColumn(FormatColumn(v))
+        If Not a(0) Then
+            doError ".Fields = """ & v & """ ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        Else
+            a1 = a(1)
+            k = UBound(a1)
+            For i = 0 To k
+                a2 = Split(a1(i), "AS ", -1, 1)
+                j = UBound(a2)
+                If j > 0 Then
+                    l = Left(a1(i), InStrRev(a1(i), "AS ", -1 , 1) -1)
+                    If CheckColumn(l)(0) Then
+                        AddFieldsArray l, a2(j)
+                    Else
+                        AddFieldsArray a1(i), ""
+                    End If
+                Else
+                    AddFieldsArray a1(i), ""
                 End If
-        End Select
-        If Err Then
-            doError Err.Description
-            If Not IsBlank(sSql) Then
-                Set RecordSet = oConn.Execute( sSql )
-                If Err Then doError Err.Description
+            Next
+            k = UBound(aFields)
+            ReDim aFieldString(k)
+            For i = 0 To k
+                If Not IsBlank(aFields(i)(1)) Then
+                    aFieldString(i) = aFields(i)(0) & " AS " & aFields(i)(1)
+                Else
+                    aFieldString(i) = aFields(i)(0)
+                End If
+            Next
+            sFields = Join(aFieldString, ", ")
+        End If
+    End Sub
+
+    Private Sub AddFieldsArray(ByVal x, ByVal y)
+        Dim iFields
+        x = to_Str(x)
+        If CheckColumn(x)(0) Then
+            iFields = UBound(aFields) + 1
+            ReDim Preserve aFields(iFields)
+            aFields(iFields) = Array(x, to_Str(y))
+        End If
+    End Sub
+
+    Property Get Fields()
+        Fields = sFields
+    End Property
+
+    Property Let Condition(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If IsBlank(sTMPString) Then
+            ReDim aCondition( -1)
+        Else
+            If CheckColumn(sTMPString)(0) Then
+                ReDim aCondition(0)
+                aCondition(0) = sTMPString
             Else
-                doError Err.Description
+                doError ".Condition = """ & sTMPString & """ ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
             End If
         End If
-        Err.Clear()
     End Property
 
-    '//∞Ê±æ–≈œ¢
+    Public Sub AddCondition(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If IsBlank(sTMPString) Then Exit Sub
+        If CheckColumn(sTMPString)(0) Then
+            Dim iCondition : iCondition = UBound(aCondition) + 1
+            ReDim Preserve aCondition(iCondition)
+            aCondition(iCondition) = sTMPString
+        Else
+            doError ".AddCondition(""" & sTMPString & """) ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        End If
+    End Sub
 
-    Public Property Get Version()
-        Version = sVersion
+    Private Function Sorted(v)
+        Sorted = IIf(UCase(to_Str(v)) = "DESC", "DESC", "ASC")
+    End Function
+
+    Private Function SortedRev(v)
+        SortedRev = IIf(Sorted(v) = "DESC", "ASC", "DESC")
+    End Function
+
+    Private Function IsSorted(v)
+        Select Case UCase(to_Str(v))
+            Case "ASC", "DESC" : IsSorted = True
+            Case Else : IsSorted = False
+        End Select
+    End Function
+
+    Property Let OrderBy(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If CheckColumn(sTMPString)(0) Then
+            ReDim aOrderBy( -1)
+            Call AddOrderBy(sTMPString)
+        Else
+            doError ".OrderBy = """ & sTMPString & """ ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        End If
     End Property
 
-    '// ‰≥ˆ“≥¬Îº∞º«¬º ˝µ»–≈œ¢
+    Public Sub AddOrderBy(v)
+        Dim sTMPString : sTMPString = FormatColumn(v)
+        If IsBlank(sTMPString) Then Exit Sub
+        If CheckColumn(sTMPString)(0) Then
+            Dim a1, a2, i, j, k
+            a1 = Split(sTMPString, ",")
+            k = UBound(a1)
+            For i = 0 To k
+                a2 = Split(a1(i), " ")
+                j = UBound(a2)
+                If j > 0 Then
+                    If IsSorted(a2(j)) Then
+                        Call AddOrderByArray(Left(a1(i), InStrRev(a1(i), " ") -1), Sorted(a2(j)))
+                    Else
+                        Call AddOrderByArray(a1(i), "ASC")
+                    End If
+                Else
+                    Call AddOrderByArray(a1(i), "ASC")
+                End If
+            Next
+        Else
+            doError ".AddOrderBy(""" & sTMPString & """) ÂèØËÉΩÊúâÁ¨¶Âè∑ÂåπÈÖçÈîôËØØÔºåËØ∑ÈáçÊñ∞Ê£ÄÊü•„ÄÇ"
+        End If
+    End Sub
 
-    Public Property Get PageInfo()
-        CaculatePageCount()
-        PageInfo = Replace(sPageInfo, sRecordCount, iRecordCount)
-        PageInfo = Replace(PageInfo, sPageCount, iPageCount)
-        PageInfo = Replace(PageInfo, sPage, iPage)
+    Public Sub AddOrderByArray(x, y)
+        Dim i, j
+        x = to_Str(x)
+        If Not bOrderByPKey Then
+            If CheckColumn(x)(0) Then
+                i = UBound(aOrderBy) + 1
+                ReDim Preserve aOrderBy(i)
+                If StrComp(x, sPKey, 1) = 0 Or StrComp(x, "[" & sPKey & "]", 1) = 0 Then
+                    bOrderByPKey = True
+                    x = sPKey
+				Else
+					For j = 0 To UBound(aFields)
+						If StrComp(sPKey, aFields(j)(0), 1) = 0 Or StrComp("[" & aFields(j)(0) & "]", sPKey, 1) = 0 Then
+							If StrComp(x, aFields(j)(1), 1) = 0 Or StrComp("[" & aFields(j)(1) & "]", x, 1) = 0 Then
+								bOrderByPKey = True
+								x = sPKey
+							End If
+						End If
+					Next
+                End If
+                aOrderBy(i) = Array(x, y)
+            End If
+        End If
+    End Sub
+
+    Private Sub CreateOrderByString()
+        Dim i, j, k, aOrderByFields, iOrderByFields, sOrderByFieldsString, iFieldsString, bOrderByDistinct, bOrderByDistinctAll
+        If Not bDistinct Then
+            If iSpeed = 1 Then
+                sOrderByString = " ORDER BY " & sPKey & " " & sPKeyDefaultOrder
+                sOrderByStringRev = " ORDER BY " & sPKey & " " & SortedRev(sPKeyDefaultOrder)
+            End If
+        Else
+            bDisTinct = True
+            sOrderByString = ""
+            sOrderByStringRev = ""
+        End If
+        k = UBound(aOrderBy)
+        bOrderByDistinctAll = True
+        If k > -1 Then
+            ReDim aOrderByString(k), aOrderByStringRev(k)
+            For i = 0 To k
+                aOrderByString(i) = aOrderBy(i)(0) & " " & aOrderBy(i)(1)
+                aOrderByStringRev(i) = aOrderBy(i)(0) & " " & SortedRev(aOrderBy(i)(1))
+                If bDistinct And bOrderByDistinctAll Then
+                    aOrderByFields = Split(sFields, aOrderBy(i)(0), -1, 1)
+                    iOrderByFields = UBound(aOrderByFields)
+                    If iOrderByFields > 0 Then
+                        bOrderByDistinct = False
+                        For j = 0 To iOrderByFields - 1
+                            sOrderByFieldsString = sOrderByFieldsString & aOrderByFields(j)
+                            iFieldsString = UBound(Split(sOrderByFieldsString, "'"))
+                            If iFieldsString = -1 Or iFieldsString Mod 2 = 0 Then
+                                bOrderByDistinct = True
+                                Exit For
+                            End If
+                        Next
+                        bOrderByDistinctAll = bOrderByDistinctAll And bOrderByDistinct
+                    Else
+                        bOrderByDistinctAll = False
+                    End If
+                End If
+            Next
+            If bDistinct And Not bOrderByDistinctAll Then
+                doError "Â¶ÇÊûúÊåáÂÆö‰∫Ü .DISTINCT = TrueÔºåÈÇ£‰πà ORDER BY Â≠êÂè•‰∏≠ÁöÑÈ°πÂ∞±ÂøÖÈ°ªÂá∫Áé∞Âú®ÈÄâÊã©ÂàóË°®‰∏≠„ÄÇ"
+            Else
+                sOrderByString = " ORDER BY " & Join(aOrderByString, ", ")
+                sOrderByStringRev = " ORDER BY " & Join(aOrderByStringRev, ", ")
+                If Not bDistinct And Not bOrderByPKey Then
+                    sOrderByString = sOrderByString & ", " & sPkey & " " & sPKeyDefaultOrder
+                    sOrderByStringRev = sOrderByStringRev & ", " & sPkey & " " & SortedRev(sPKeyDefaultOrder)
+                End If
+            End If
+        End If
+    End Sub
+
+    Property Get OrderBy()
+        Call CreateOrderByString()
+        OrderBy = sOrderByString
     End Property
 
-    '// ‰≥ˆ∑÷“≥—˘ Ω
-
-    Public Property Get Style()
-        Style = iStyle
+    Property Let PKeyOrder(v)
+        sPKeyDefaultOrder = Sorted(v)
     End Property
 
-    '// ‰≥ˆ∑÷“≥±‰¡ø
+    Property Let PageParam(v)
+        sPageParam = to_Str(v)
+        If IsBlank(sPageParam) Then sPageParam = "page"
+        SetPageParam(sPageParam)
+    End Property
 
-    Public Property Get PageParam()
+    Property Get PageParam()
         PageParam = sPageParam
     End Property
 
-    '// ‰≥ˆ∑≠“≥∞¥≈•
-
-    Public Property Get Pager()
-        Dim ii, iStart, iEnd
-        Pager = ""
-        ii = (iPagerSize \ 2)
-        iEnd = iPage + ii
-        iStart = iPage - (ii + (iPagerSize Mod 2)) + 1
-        If iEnd > iPageCount Then
-            iEnd = iPageCount
-            iStart = iPageCount - iPagerSize + 1
-        End If
-        If iStart < 1 Then
-            iStart = 1
-            iEnd = iStart + iPagerSize -1
-        End If
-        If iEnd > iPageCount Then
-            iEnd = iPageCount
-        End If
-
-        Select Case iStyle
-            Case 0
-                If iPageCount>0 Then
-                    If iPage>1 Then
-                        Pager = Pager & IIf(IsBlank(sFirstPage), "", "<a href=""" & Rewrite(1) & """>" & sFirstPage & "</a>" & sSpaceMark)
-                        Pager = Pager & IIf(IsBlank(sPreviewPage), "", "<a href=""" & Rewrite((iPage -1)) & """>" & sPreviewPage & "</a>" & sSpaceMark)
-                    Else
-                        Pager = Pager & IIf(IsBlank(sFirstPage), "", "<span class=""disabled"">" & sFirstPage & "</span>" & sSpaceMark)
-                        Pager = Pager & IIf(IsBlank(sPreviewPage), "", "<span class=""disabled"">" & sPreviewPage & "</span>" & sSpaceMark)
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPagerTop < iStart Then
-                            ii = iPagerTop
-                        Else
-                            ii = iStart - 1
-                        End If
-                        For i = 1 To ii
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                        Next
-                        If iPagerTop < iStart -1 Then Pager = Pager & "..." & sSpaceMark
-                    End If
-                    If iPagerSize >0 Then
-                        For i = iStart To iEnd
-                            If i = iPage Then
-                                Pager = Pager & "<span class=""current"">" & Replace(sCurrentPage, "{$Currentpage}", i, 1, -1, 1) & "</span>" & sSpaceMark
-                            Else
-                                Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                            End If
-                        Next
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPageCount - iPagerTop > iEnd Then Pager = Pager & "..." & sSpaceMark
-                        If iPageCount - iPagerTop > iEnd Then
-                            ii = iPageCount - iPagerTop + 1
-                        Else
-                            ii = iEnd + 1
-                        End If
-                        For i = ii To iPageCount
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                        Next
-                    End If
-                    If iPageCount>iPage Then
-                        Pager = Pager & IIf(IsBlank(sNextPage), "", "<a href=""" & Rewrite(iPage + 1) & """>" & sNextPage & "</a>" & sSpaceMark)
-                        Pager = Pager & IIf(IsBlank(sLastPage), "", "<a href=""" & Rewrite(iPageCount) & """>" & sLastPage & "</a>" & sSpaceMark)
-                    Else
-                        Pager = Pager & IIf(IsBlank(sNextPage), "", "<span class=""disabled"">" & sNextPage & "</span>" & sSpaceMark)
-                        Pager = Pager & IIf(IsBlank(sLastPage), "", "<span class=""disabled"">" & sLastPage & "</span>")
-                    End If
-                End If
-            Case 1
-                If iPageCount>0 Then
-                    If iPage>1 Then
-                        Pager = Pager & "<a href=""" & Rewrite(1) & """>" & sFirstPage & "</a>" & sSpaceMark
-                        Pager = Pager & "<a href=""" & Rewrite((iPage -1)) & """>" & sPreviewPage & "</a>" & sSpaceMark
-                    Else
-                        Pager = Pager & sFirstPage & sSpaceMark
-                        Pager = Pager & sPreviewPage & sSpaceMark
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPagerTop < iStart Then
-                            ii = iPagerTop
-                        Else
-                            ii = iStart - 1
-                        End If
-                        For i = 1 To ii
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                        Next
-                        If iPagerTop < iStart -1 Then Pager = Pager & "..." & sSpaceMark
-                    End If
-                    If iPagerSize >0 Then
-                        For i = iStart To iEnd
-                            If i = iPage Then
-                                Pager = Pager & Replace(sCurrentPage, "{$Currentpage}", i, 1, -1, 1) & sSpaceMark
-                            Else
-                                Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                            End If
-                        Next
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPageCount - iPagerTop > iEnd Then Pager = Pager & "..." & sSpaceMark
-                        If iPageCount - iPagerTop > iEnd Then
-                            ii = iPageCount - iPagerTop + 1
-                        Else
-                            ii = iEnd + 1
-                        End If
-                        For i = ii To iPageCount
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Listpage}", i, 1, -1, 1) & "</a>" & sSpaceMark
-                        Next
-                    End If
-                    If iPageCount>iPage Then
-                        Pager = Pager & "<a href=""" & Rewrite(iPage + 1) & """>" & sNextPage & "</a>" & sSpaceMark
-                        Pager = Pager & "<a href=""" & Rewrite(iPageCount) & """>" & sLastPage & "</a>" & sSpaceMark
-                    Else
-                        Pager = Pager & sNextPage & sSpaceMark
-                        Pager = Pager & sLastPage
-                    End If
-                End If
-            Case Else
-                If iPageCount>0 Then
-                    If iPage>1 Then
-                        Pager = Pager & "<a href=""" & Rewrite(1) & """><font color=""#220282"">[&#39318;&#39029;]</font></a>" & sSpaceMark
-                        Pager = Pager & "<a href=""" & Rewrite((iPage -1)) & """><font color=""#220282"">[&#19978;&#19968;&#39029;]</font></a>" & sSpaceMark
-                    Else
-                        Pager = Pager & "<font color=""#220282"">[&#39318;&#39029;]</font>" & sSpaceMark
-                        Pager = Pager & "<font color=""#220282"">[&#19978;&#19968;&#39029;]</font>" & sSpaceMark
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPagerTop < iStart Then
-                            ii = iPagerTop
-                        Else
-                            ii = iStart - 1
-                        End If
-                        For i = 1 To ii
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """><font color=""#220282"">" & Replace("[{$Listpage}]", "{$Listpage}", i, 1, -1, 1) & "</font></a>" & sSpaceMark
-                        Next
-                        If iPagerTop < iStart -1 Then Pager = Pager & "..." & sSpaceMark
-                    End If
-                    If iPagerSize >0 Then
-                        For i = iStart To iEnd
-                            If i = iPage Then
-                                Pager = Pager & "<font color=""#820222"">" & Replace("[{$Currentpage}]", "{$Currentpage}", i, 1, -1, 1) & "</font>" & sSpaceMark
-                            Else
-                                Pager = Pager & "<a href=""" & ReWrite(i) & """><font color=""#220282"">" & Replace("[{$Listpage}]", "{$Listpage}", i, 1, -1, 1) & "</font></a>" & sSpaceMark
-                            End If
-                        Next
-                    End If
-                    If iPagerTop > 0 Then
-                        If iPageCount - iPagerTop > iEnd Then Pager = Pager & "..." & sSpaceMark
-                        If iPageCount - iPagerTop > iEnd Then
-                            ii = iPageCount - iPagerTop + 1
-                        Else
-                            ii = iEnd + 1
-                        End If
-                        For i = ii To iPageCount
-                            Pager = Pager & "<a href=""" & ReWrite(i) & """><font color=""#220282"">" & Replace("[{$Listpage}]", "{$Listpage}", i, 1, -1, 1) & "</font></a>" & sSpaceMark
-                        Next
-                    End If
-                    If iPageCount>iPage Then
-                        Pager = Pager & "<a href=""" & Rewrite(iPage + 1) & """><font color=""#220282"">[&#19979;&#19968;&#39029;]</font></a>" & sSpaceMark
-                        Pager = Pager & "<a href=""" & Rewrite(iPageCount) & """><font color=""#220282"">[&#23614;&#39029;]</font></a>" & sSpaceMark
-                    Else
-                        Pager = Pager & "<font color=""#220282"">[&#19979;&#19968;&#39029;]</font>" & sSpaceMark
-                        Pager = Pager & "<font color=""#220282"">[&#23614;&#39029;]</font>"
-                    End If
-                End If
-        End Select
-    End Property
-
-    '//…˙≥…“≥√ÊÃ¯◊™
-
-    Public Property Get JumpPage()
-        Dim x, sQueryString, aQueryString
-        sJumpPage = vbCrLf
-        Select Case sJumpPageType
-            Case "INPUT"
-                sJumpPage = "<input type=""text"" title=""&#35831;&#36755;&#20837;&#25968;&#23383;&#10;&#13;&#22238;&#36710;&#36339;&#36716;"" size=""3"" onKeyDown=""if(event.keyCode==13){if(!isNaN(this.value)){document.location.href=" & IIf(IsBlank(sRewrite), "'" & ReWrite(0) & "'+this.value", Replace("'" & sRewrite & "'", "*", "' + this.value + '")) & "}return false}"" " & sJumpPageAttr & " />"
-            Case "SELECT"
-                sJumpPage = sJumpPage & "<select onChange=""javascript:window.location.href=this.options[this.selectedIndex].value;"" " & sJumpPageAttr & "°°>" & vbCrLf
-                iStart = iPage - 50
-                iEnd = iPage + 50
-                If iEnd > iPageCount Then
-                    iEnd = iPageCount
-                    iStart = iPageCount - 100 + 1
-                End If
-                If iStart < 1 Then
-                    iStart = 1
-                    iEnd = iStart + 100 -1
-                End If
-                sJumpPage = sJumpPage & "<option value=""javascript:void(0)"">--</option>" & vbCrLf
-                For i = iStart To IIf(iEnd > iPageCount, iPageCount, iEnd)
-                    sJumpPage = sJumpPage & "<option value=""" & ReWrite(i) & """" & IIf(i = iPage, " selected=""selected"" ", "") & ">"&i&"</option>" & vbCrLf
+    Private Function SetPageParam(v)
+        Dim x, y, sForm
+        sQueryString = ""
+        For Each x In Request.QueryString
+            If StrComp(x, sPageParam, 1) <> 0 Then
+                For Each y In Request.QueryString(x)
+                    sQueryString = sQueryString & "&" & x & "=" & Server.URLEncode(y)
                 Next
-                sJumpPage = sJumpPage & "</select>"
-            Case Else
-                sJumpPage = ""
-        End Select
-        JumpPage = sJumpPage
-    End Property
-
-    '// ‰≥ˆ Ù–‘ Ω· ¯
-    '//-------------------------------------------------------------------------
-
-End Class
-%>
-<%
-Sub Eg()
-    With Response
-        .Write("<p style=""text-align:left;padding:22px;border:1px solid #820222;font-size:12px"" id=""eg"">")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// ∂®“ÂEg()—˘¿˝œ‡πÿ±‰¡ø »Áπ˚Œ¥ π”√Option Explicitø… °¬‘<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'Dim i, iCols, iColsPercent, iPageSize<br />")
-        .Write("'Dim iCurrPage, iRecordCount, iPageCount<br />")
-        .Write("'Dim sPageInfo, sPager, sJumpPage<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// Kin_Db_Pager∑÷“≥¿‡ø™ º<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'OpenConn()<br />")
-        .Write("iPageSize = 20<br />")
-        .Write("Dim oDbPager<br />")
-        .Write("Set oDbPager = New Kin_Db_Pager<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// Ω¯–– ˝æ›ø‚≤È—Ø«∞µƒœ‡πÿ≤Œ ˝…Ë÷√<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'//÷∏∂® ˝æ›ø‚¡¨Ω”<br />")
-        .Write("oDbPager.Connect(oConn) '//∑Ω∑®“ª(Õ∆ºˆ)<br />")
-        .Write("'Set oDbPager.ActiveConnection = oConn '//∑Ω∑®∂˛<br />")
-        .Write("'oDbPager.ConnectionString = oConn.ConnectionString '//∑Ω∑®»˝<br />")
-        .Write("'//÷∏∂® ˝æ›ø‚¿‡–Õ.ƒ¨»œ÷µ:""MSSQL""<br />")
-        .Write("'oDbPager.DbType = ""ACCESS""<br />")
-        .Write("'//÷∏∂®ƒø±Í±Ì ø…”√¡Ÿ ±±Ì""(Select * From [Table]) t""<br />")
-        .Write("oDbPager.TableName = ""Kin_Article""<br />")
-        .Write("'//—°‘Ò¡– ”√∂∫∫≈∑÷∏Ù ƒ¨»œŒ™*<br />")
-        .Write("oDbPager.Fields = ""*""<br />")
-        .Write("'//÷∏∂®∏√±Ìµƒ÷˜º¸<br />")
-        .Write("oDbPager.PKey = ""Article_ID""<br />")
-        .Write("'//÷∏∂®√ø“≥º«¬ººØ ˝¡ø<br />")
-        .Write("oDbPager.PageSize = iPageSize<br />")
-        .Write("'//÷∏∂®±Ì æ“≥ ˝µƒURL±‰¡ø ƒ¨»œ÷µ:""page""<br />")
-        .Write("'oDbPager.PageParam = ""page""<br />")
-        .Write("'//÷∏∂®µ±«∞“≥ ˝<br />")
-        .Write("oDbPager.Page = Request.QueryString(""page"") '//“≤ø…“‘÷±Ω””√Request.QueryString(oDbPager.PageParam)<br />")
-        .Write("'//÷∏∂®≈≈–ÚÃıº˛<br />")
-        .Write("oDbPager.OrderBy = ""Article_ID DESC""<br />")
-        .Write("'//ÃÌº”Ãıº˛ ø…∂‡¥Œ π”√.»Áπ˚”√OrÃıº˛–Ë“™(Ãıº˛1 Or Ãıº˛2 Or ...)<br />")
-        .Write("oDbPager.AddCondition ""Article_Status &gt; 0""<br />")
-        .Write("If Day(Date) Mod 2 = 0 Then<br />")
-        .Write("&nbsp; &nbsp; oDbPager.AddCondition ""(Article_ID &lt; 104 Or Article_ID &gt; 222)""<br />")
-        .Write("End If<br />")
-        .Write("'GetCondition """","""",""""<br />")
-        .Write("'// ‰≥ˆSQL”Ôæ‰ ∑Ω±„µ˜ ‘<br />")
-        .Write("'Response.Write(oDbPager.GetSql()) : Response.Flush()<br />")
-        .Write("Set oRs = oDbPager.Recordset<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// ∂‘∏√º«¬ººØµƒ∑÷“≥—˘ Ωº∞ƒ£∞ÂΩ¯––…Ë÷√(≤ª…Ë÷√‘Ú π”√ƒ¨»œ—˘ Ω)<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'//—°‘Ò ∑÷“≥¡¥Ω”  ‰≥ˆµƒ—˘ Ω<br />")
-        .Write("'//Œ™0: ø…“‘ π”√—˘ Ω±Ì∂‘∑÷“≥¡¥Ω”Ω¯––√¿ªØ(http://jorkin.reallydo.com/Kin_Db_Pager/?page=10)<br />")
-        .Write("'//Œ™1: ø… π”√&lt;font&gt;µ»HTML¥˙¬ÎΩ¯––—’…´…Ë÷√<br />")
-        .Write("'oDbPager.Style = 0<br />")
-        .Write("'//∂®“Â  ◊“≥/…œ“ª“≥/œ¬“ª“≥/ƒ©“≥ ¡¥Ω”—˘ Ω(÷ß≥÷HTML)<br />")
-        .Write("'oDbPager.FirstPage = ""&amp;lt;&amp;lt;""<br />")
-        .Write("'oDbPager.PreviewPage = ""&amp;lt;""<br />")
-        .Write("'oDbPager.NextPage = ""&amp;gt;""<br />")
-        .Write("'oDbPager.LastPage = ""&amp;gt;&amp;gt;""<br />")
-        .Write("'//∂®“Â µ±«∞“≥/¡–±Ì“≥ ¡¥Ω”—˘ Ω {$CurrentPage}{$ListPage}Ω´±ªÃÊªª≥… µ±«∞“≥/¡–±Ì“≥ µƒ ˝◊÷<br />")
-        .Write("'oDbPager.CurrentPage = ""{$CurrentPage}""<br />")
-        .Write("'oDbPager.ListPage = ""{$ListPage}""<br />")
-        .Write("'//∂®“Â∑÷“≥¡–±Ì«∞∫Û“™œ‘ æº∏∏ˆ¡¥Ω” »Á12...456...78 ƒ¨»œŒ™0<br />")
-        .Write("'oDbPager.PagerTop = 2<br />")
-        .Write("'//∂®“Â∑÷“≥¡–±Ì◊Ó¥Û ˝¡ø ƒ¨»œŒ™7<br />")
-        .Write("'oDbPager.PagerSize = 5<br />")
-        .Write("'//∂®“Âº«¬ººØ◊€∫œ–≈œ¢<br />")
-        .Write("'oDbPager.PageInfo = &quot;π≤”– {$Kin_RecordCount} º«¬º “≥¥Œ:{$Kin_Page}/{$Kin_PageCount}&quot;<br />")
-        .Write("'//◊‘∂®“ÂISAPI_REWRITE¬∑æ∂ * ∫≈ Ω´±ªÃÊªªŒ™µ±«∞“≥ ˝<br />")
-        .Write("'oDbPager.RewritePath = ""Article/*.html""<br />")
-        .Write("'//∂®“ÂÃ¯◊™¡–±ÌŒ™&lt;INPUT&gt;Œƒ±æøÚ ƒ¨»œŒ™""SELECT""<br />")
-        .Write("'oDbPager.JumpPageType = ""INPUT""<br />")
-        .Write("'//∂®“Â“≥√ÊÃ¯µƒSELECT/INPUTµƒ—˘ Ω(HTML¥˙¬Î)<br />")
-        .Write("'oDbPager.JumpPageAttr = ""class=""""reallydo"""" style=""""color:#820222""""""<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// ªÒ»°À˘–Ë“™±‰¡ø“‘±„Ω¯–– ‰≥ˆ<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'//ªÒ»°µ±«∞“≥¬Î<br />")
-        .Write("'iCurrPage = oDbPager.Page<br />")
-        .Write("'//ªÒ»°º«¬ººØ ˝¡ø<br />")
-        .Write("'iRecordCount = oDbPager.RecordCount<br />")
-        .Write("'//ªÒ»°“≥√Ê◊‹º∆ ˝¡ø<br />")
-        .Write("'iPageCount = oDbPager.PageCount<br />")
-        .Write("'//ªÒ»°º«¬ººØ–≈œ¢<br />")
-        .Write("sPageInfo = oDbPager.PageInfo<br />")
-        .Write("'//ªÒ»°∑÷“≥–≈œ¢<br />")
-        .Write("sPager = oDbPager.Pager<br />")
-        .Write("'//ªÒ»°Ã¯◊™¡–±Ì<br />")
-        .Write("sJumpPage = oDbPager.JumpPage<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'// ¿˝◊”: ∂ØÃ¨ ‰≥ˆM––N¡–, ∂‡––∂‡¡–, —≠ª∑––¡–, —≠ª∑TABLE<br />")
-        .Write("'//-----------------------------------------------------------------------------<br />")
-        .Write("'//≥ı ºªØi◊º±∏—≠ª∑<br />")
-        .Write("i = 0<br />")
-        .Write("'//∂®“Â“ª––◊Ó∂‡”–º∏¡–(’˝’˚ ˝)<br />")
-        .Write("iCols = 4<br />")
-        .Write("iColsPercent = FormatPercent(1 / iCols, 0)<br />")
-        .Write("'// ‰≥ˆTABLE±ÌÕ∑<br />")
-        .Write("Response.Write(""&lt;table width=""""100%"""" border=""""0"""" cellspacing=""""1"""" cellpadding=""""2"""" bgcolor=""""#000000""""&gt;&lt;tr&gt;"")<br />")
-        .Write("'//∑Ω∑®“ª:º«¬ººØ—≠ª∑ø™ º<br />")
-        .Write("Do While Not oRs.EOF<br />")
-        .Write(" &nbsp; &nbsp;'//√ø––¿˝¬˙¡ÀæÕº”“ª∏ˆ–¬––<br />")
-        .Write(" &nbsp; &nbsp;If i &gt; 0 And i Mod iCols = 0 Then Response.Write(""&lt;/tr&gt;&lt;tr&gt;"")<br />")
-        .Write(" &nbsp; &nbsp;i = i + 1<br />")
-        .Write(" &nbsp; &nbsp;Response.Write(""&lt;td width="""""" & iColsPercent & """""" bgcolor=""""#CCE8CF""""&gt;&lt;font color=""""#000000""""&gt;"" & Server.HTMLEncode(oRs(2) & """") & ""&lt;/font&gt;&lt;/td&gt;"")<br />")
-        .Write(" &nbsp; &nbsp;oRs.MoveNext<br />")
-        .Write("Loop<br />")
-        .Write("'//∑Ω∑®∂˛:”Œ±Í—≠ª∑ø™ º<br />")
-        .Write("'//ªÒ»°µ±«∞“≥√Ê◊‹º«¬º ˝¡ø<br />")
-        .Write("'iCurrentPageSize = oDbPager.CurrentPageSize<br />")
-        .Write("'For i = 0 To iCurrentPageSize - 1<br />")
-        .Write("' &nbsp; &nbsp;'//√ø––¿˝¬˙¡ÀæÕº”“ª∏ˆ–¬––<br />")
-        .Write("' &nbsp; &nbsp;If i &gt; 0 And i Mod iCols = 0 Then Response.Write(""&lt;/tr&gt;&lt;tr&gt;"")<br />")
-        .Write("' &nbsp; &nbsp;Response.Write(""&lt;td width="""""" & iColsPercent & """""" bgcolor=""""#CCE8CF""""&gt;&lt;font color=""""#000000""""&gt;"" & Server.HTMLEncode(oRs(2) & """") & ""&lt;/font&gt;&lt;/td&gt;"")<br />")
-        .Write("' &nbsp; &nbsp;oRs.MoveNext<br />")
-        .Write("'Next<br />")
-        .Write("'//—≠ª∑Ω· ¯ ø™ º≤πø’»±µƒ¡–<br />")
-        .Write("Do While i &lt; iPageSize<br />")
-        .Write(" &nbsp; &nbsp;'//“‘œ¬¡Ω∏ˆÃıº˛∂˛—°“ª<br />")
-        .Write(" &nbsp; &nbsp;If i Mod iCols = 0 Then<br />")
-        .Write(" &nbsp; &nbsp; &nbsp; &nbsp;Response.Write(""&lt;/tr&gt;&lt;tr&gt;"") '//»Áπ˚“™≤π¬˙’˚∏ˆ±Ì∏ÒæÕºÃ–¯ ‰≥ˆ&lt;tr&gt;&lt;/tr&gt;<br />")
-        .Write(" &nbsp; &nbsp; &nbsp; &nbsp;'Exit Do '//»Áπ˚÷ª≤π¬˙◊Ó∫Û“ª––æÕ÷±Ω”Ω· ¯<br />")
-        .Write(" &nbsp; &nbsp;End If<br />")
-        .Write(" &nbsp; &nbsp;i = i + 1<br />")
-        .Write(" &nbsp; &nbsp;Response.Write(""&lt;td width=""""""&FormatPercent(1 / iCols, 0)&"""""" bgcolor=""""#CCCCCC""""&gt;&amp;nbsp;&lt;/td&gt;"")<br />")
-        .Write("Loop<br />")
-        .Write("'// ‰≥ˆ∑÷“≥–≈œ¢/—˘ Ω/TABLEŒ≤<br />")
-        .Write("Response.Write(""&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="""""" & iCols & """""" bgcolor=""""#CCE8CF""""&gt;&lt;div class=""""kindbpager""""&gt;"" & sPager & "" Ã¯÷¡: "" & sJumpPage & "" “≥&lt;/div&gt;"" & sPageInfo & ""&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"")<br />")
-        .Write("oRs.Close<br />")
-        .Write("Set oDbPager = Nothing<br />")
-        .Write("</p>")
-        .Flush()
-    End With
-End Sub
-
-Sub GetCondition(valChoose, valOperator, valKeyWord)
-    If IsBlank(BStr(valChoose)) Then valChoose = "Choose"
-    If IsBlank(BStr(valOperator)) Then valOperator = "Operator"
-    If IsBlank(BStr(valKeyWord)) Then valKeyWord = "KeyWord"
-    Dim aChoose, aOperator, aKeyWord, x
-    Set aChoose = Request(valChoose)
-    Set aOperator = Request(valOperator)
-    Set aKeyWord = Request(valKeyWord)
-    If aChoose.Count = aOperator.Count And aOperator.Count = aKeyWord.Count Then
-        For x = 1 To aChoose.Count
-            If aChoose(x)<>"" And aChoose(x)<>"" And aKeyWord(x)<>"" Then
-                Select Case aOperator(x)
-                    Case "<", "=", ">", "<=", ">=", "<>", "!=", "!<", "!>"
-                        If InStr(aChoose(x), "[int]")>0 Then
-                            oDbPager.AddCondition Str4Sql(Replace(aChoose(x), "[int]", "")) & " " & aOperator(x) & " " & Bint(aKeyWord(x)) & ""
-                        Else
-                            oDbPager.AddCondition Str4Sql(aChoose(x)) & " " & aOperator(x) & " '" & Str4Sql(BStr(aKeyWord(x))) & "'"
-                        End If
-                    Case Else
-                        If InStr(aChoose(x), "[int]")>0 Then
-                            oDbPager.AddCondition " " & Str4Sql(Replace(aChoose(x), "[int]", "")) & " like '%" & Bint(aKeyWord(x)) & "%'"
-                        Else
-                            If LCase(aKeyWord(x)) = "null" Then
-                                oDbPager.AddCondition "(" & Str4Sql(aChoose(x)) & " is null Or " & Str4Sql(aChoose(x)) & " = '')"
-                            ElseIf InStr(LCase(aChoose(x)), "not")>0 Then
-                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " not like '%" & Str4Like(BStr(aKeyWord(x))) & "%'"
-                            Else
-                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " like '" & Replace(Replace(Replace(Str4Like(BStr(aKeyWord(x))), "*", "%"), "?", "_"), "£ø", "_") & "'"
-                            End If
-                        End If
-                End Select
             End If
         Next
-    End If
-End Sub
+        sUrl = Request.ServerVariables("URL") & "?" & IIf(IsBlank(sQueryString), "", Mid(sQueryString, 2) & "&")
+        If sFormMethod = "GET" Then
+            sUrl = sUrl & sPageParam & "="
+            SetPage(Request.QueryString(v))
+        Else
+            SetPage(Request.Form(v))
+            For Each x In Request.Form
+                If StrComp(x, sPageParam, 1) <> 0 Then
+                    For Each y In Request.Form(x)
+                        If InStr(y, vbCr) + InStr(y, vbLf) > 0 Then
+                            sForm = sForm & "<textarea name=""" & x & """>" & Server.HTMLEncode(y) & "</textarea>" & vbCrLf
+                        Else
+                            sForm = sForm & "<input name=""" & x & """ value=""" & Server.HTMLEncode(y) & """>" & vbCrLf
+                        End If
+                    Next
+                End If
+            Next
+            Trace sForm
+        End If
+    End Function
+
+    Property Let FormMethod(v)
+        sFormMethod = UCase(to_Str(v))
+        If sFormMethod <> "POST" Then sFormMethod = "GET"
+    End Property
+
+    Property Let PageSize(v)
+        iPageSize = to_Int(v)
+        If iPageSize < 1 Then iPageSize = -1
+    End Property
+
+	Property Let Page1Size(v)
+		iPage1Size = to_Int(v)
+		If iPage1Size < 1 Then iPage1Size = Null
+	End Property
+
+    Private Function SetPage(v)
+        iPage = to_Int(v)
+        If iPage < 1 Then iPage = 1
+    End Function
+
+    Property Let Page(v)
+        SetPage(v)
+    End Property
+
+    Property Let AbsolutePage(v)
+        SetPage(v)
+    End Property
+
+    Property Get Page()
+        Page = iPage
+    End Property
+
+    Property Get AbsolutePage()
+        AbsolutePage = iPage
+    End Property
+
+	Property Let PageOffSet(v)
+		iPageOffSet = to_Int(v)
+	End Property
+
+	Property Get PageOffSet()
+		PageOffSet = iPageOffSet
+	End Property
+
+    Property Let CacheType(v)
+        Select Case UCase(to_Str(v))
+		Case "APPLICATION", 0
+			iCacheType = 0
+		Case "SESSION", 1
+			iCacheType = 1
+        Case "COOKIE", 2
+			iCacheType = 2
+		Case Else
+			iCacheType = -1
+        End Select
+    End Property
+
+    Property Let CacheTimeOut(v)
+        iCacheTimeOut = to_Int(v)
+    End Property
+
+    Private Function setRecordCountCache(v)
+		On Error Resume Next
+		v = "{KIN_PAGINATION_CACHE:" & UCase(to_Str(v)) & "}"
+		Dim iCacheDateTimeOut
+		iCacheDateTimeOut = Now() + TimeSerial(0,iCacheTimeOut, 0)
+        Select Case UCase(iCacheType)
+		Case 0
+			Application.Lock()
+			Application.Contents.Remove(v)
+			Application(v) = Array(iRecordCount, iCacheDateTimeOut)
+			Application.UnLock()
+		Case 1
+			Session.Contents.Remove(v)
+			Session(v) = Array(iRecordCount, iCacheDateTimeOut)
+        Case 2
+			Response.Cookies(v) = iRecordCount
+			Response.Cookies(v).Expires = iCacheDateTimeOut
+        End Select
+		If Err Then doError Err.Description
+    End Function
+
+    Private Function getRecordCountCache(v)
+		On Error Resume Next
+		v = "{KIN_PAGINATION_CACHE:" & UCase(to_Str(v)) & "}"
+		iRecordCount = Null
+        Select Case UCase(iCacheType)
+		Case 0
+			If IsArray(Application(v)) Then
+				If Application(v)(1) < Now() Then Exit Function
+				iRecordCount = to_Int(Application(v)(0))
+			End If
+		Case 1
+			If IsArray(Session(v)) Then
+				If Session(v)(1) < Now() Then Exit Function
+				iRecordCount = to_Int(Session(v)(0))
+			End If
+        Case 2
+			If Not IsBlank(Request.Cookies(v)) Then
+				iRecordCount = to_Int(Request.Cookies(v))
+			End If
+        End Select
+		If Err Then doError Err.Description
+    End Function
+
+    Private Sub CalculateRecordCount()
+        On Error Resume Next
+		If IsBlank(oConn) Then doError "ÂøÖÈ°ªËÆæÂÆöConnection„ÄÇ"
+        Call CreateCondition()
+        Dim sSql
+        sSql = "SELECT COUNT(*) FROM " & IIf(bDistinct, "(SELECT DISTINCT " & sFields & " FROM " & QuoteName(sTableName) & " " & sCondition & ") KIN_PAGINATION_TABLE", QuoteName(sTableName) & " " & sCondition)
+        getRecordCountCache(sSql)
+        If IsNull(iRecordCount) Then
+            If sDbType = "MSSQLPRODUCE" Then
+                Call CreateCommand(0)
+            Else
+                Dim oRs
+                Set oRs = oConn.Execute(sSql)
+                iRecordCount = to_Int(oRs(0))
+                Set oRs = Nothing
+            End If
+        	setRecordCountCache(sSql)
+        End If
+        If Err Then doError Err.Description
+    End Sub
+
+    Private Sub CalculatePageCount()
+        If IsNull(iRecordCount) Then CalculateRecordCount()
+        iMaxRecordCount = iRecordCount
+        If iMaxRecords > 0 And iMaxRecordCount > iMaxRecords Then iMaxRecordCount = iMaxRecords
+		If IsNull(iPage1Size) Then iPage1Size = iPageSize
+        If iRecordCount = 0 Or iPageSize = -1 Then
+            iPageCount = 1
+            iMaxPageCount = 1
+        Else
+			iPageCount = to_Int((iRecordCount - iPage1Size) / iPageSize) + Sgn(ABS((iRecordCount - iPage1Size) Mod iPageSize)) + 1
+			iMaxPageCount = to_Int((iMaxRecordCount - iPage1Size) / iPageSize) + Sgn(ABS((iMaxRecordCount - iPage1Size) Mod iPageSize)) + 1
+        End If
+        If iPage > iMaxPageCount Then iPage = iMaxPageCount
+        iLastPageCount = iMaxRecordCount - (iPageSize * (iMaxPageCount -2)) - iPage1Size
+        iStartPosition = (iPage -1) * iPageSize - iPageSize + iPage1Size '//ËÆ°ÁÆóÂºÄÂßã‰ΩçÁΩÆ
+		If iPageOffSet < 0 then iStartPosition = iStartPosition + iPageOffSet '//ÂºÄÂßãÈ°µÁ†ÅÂÅèÁßªÈáè
+		If iStartPosition < 0 Then iStartPosition = 0
+        iEndPosition = iPage * iPageSize - iPageSize + iPage1Size '//ËÆ°ÁÆóÁªìÊùü‰ΩçÁΩÆ
+		If iPageOffSet > 0 then iEndPosition = iEndPosition + iPageOffSet '//ÁªìÊùüÈ°µÁ†ÅÂÅèÁßª
+        If iEndPosition > iMaxRecordCount Then iEndPosition = iMaxRecordCount
+        iPageRecordCount = iPageSize
+        If iPage = iMaxPageCount Then iPageRecordCount = iLastPageCount
+		If iPage = 1 Then iPageRecordCount = iPage1Size
+    End Sub
+
+    Property Let Speed(v)
+        iSpeed = Sgn(Abs(to_Int(v)))
+    End Property
+
+    Public Function getSql()
+        If IsObject(oRecordSet) Then
+            getSql = oRecordSet.Source
+			If sDbType = "MSSQLPRODUCE" Then getSql = getSql & vbCrlf & "{ " & sSqlString & " }"
+        Else
+            Call CreateOrderByString()
+            Call CreateSqlString()
+            getSql = sSqlString
+        End If
+    End Function
+
+    Private Sub CreateCondition()
+        If Not IsBlank(sCondition) Then Exit Sub
+        If UBound(aCondition) >= 0 Then
+            sCondition = " WHERE ((" & Join(aCondition, ") AND (") & ")) "
+        End If
+    End Sub
+
+    Private Sub CreateSqlString()
+        If IsNull(iPageCount) Then CalculatePageCount()
+        If bDisTinct Then sDbType = "ACCESS" '//ÂÅ∑ÊáíÔºåË∞ÅÂÆ∂DistinctËøò‰∏äÁôæ‰∏áÊï∞ÊçÆÁöÑ„ÄÇ„ÄÇ„ÄÇ
+        If sDbType = "MSSQLPRODUCE" And Not IsBlank(sSqlString) Then Exit Sub
+        If iPageSize > 0 Then
+            Select Case sDbType
+                Case "MSSQL"
+                    If iSpeed = 1 Then
+                        If iPage = 1 Then
+                            sSqlString = "SELECT " & sFields & " FROM " & _
+                                         "( SELECT TOP " & iPageRecordCount & " * " & _
+                                         "FROM " & QuoteName(sTableName) & sCondition & sOrderByString & ") AS KIN_PAGINATION_TABLE"
+                        ElseIf iPage = iPageCount Then
+                            sSqlString = "SELECT " & sFields & " FROM (" & _
+                                         "SELECT TOP " & iPageRecordCount & " * " & _
+                                         "FROM " & QuoteName(sTableName) & sCondition & sOrderByStringRev & ") AS KIN_PAGINATION_TABLE1" & sOrderByString
+                        ElseIf sOrderByString = " ORDER BY " & sPKey & " ASC" Then
+                            sSqlString = "SELECT " & "TOP " & iPageRecordCount & " " & sFields & " FROM " & QuoteName(sTableName) & " WHERE " & sPKey & " > " & _
+                                         "( SELECT MAX(" & sPKey & ") FROM " & _
+                                         "( SELECT TOP " & (iStartPosition) & " " & sPKey & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString & _
+                                         ") AS KIN_PAGINATION_TABLE1 )" & sOrderByString
+                        ElseIf sOrderByString = " ORDER BY " & sPKey & " DESC" Then
+                            sSqlString = "SELECT " & sFields & " FROM (" & _
+                                         "SELECT TOP " & iPageRecordCount & " * FROM " & QuoteName(sTableName) & " WHERE " & sPKey & " > " & _
+                                         "( SELECT MAX(" & sPKey & ") FROM " & _
+                                         "( SELECT TOP " & (iRecordCount - (iStartPosition + iPageRecordCount)) & " " & sPKey & " FROM " & QuoteName(sTableName) & sCondition & sOrderByStringRev & _
+                                         ") AS KIN_PAGINATION_TABLE1 )" & sOrderByStringRev & _
+                                         ") AS KIN_PAGINATION_TABLE2" & sOrderByString
+                        Else
+                            If iPage * 2 > iPageCount Then
+                                sSqlString = "SELECT " & sFields & " FROM " & QuoteName(sTableName) & " WHERE " & sPKey & " IN (" &_
+                                             "SELECT TOP " & iPageRecordCount & " " & sPKey & " FROM (" &_
+                                             "SELECT TOP " &(iRecordCount - iStartPosition) & " * FROM " & QuoteName(sTableName) & sCondition & sOrderByStringRev &_
+                                             ") KIN_PAGINATION_TABLE1" & sOrderByString & ")" & sOrderByString
+                            Else
+                                sSqlString = "SELECT " & sFields & " FROM " & QuoteName(sTableName) & " WHERE " & sPKey & " IN (" &_
+                                             "SELECT TOP " & iPageRecordCount & " " & sPKey & " FROM (" &_
+                                             "SELECT TOP " & iEndPosition & " * FROM " & QuoteName(sTableName) & sCondition & sOrderByString &_
+                                             ") KIN_PAGINATION_TABLE1" & sOrderByStringRev & ")" & sOrderByString
+                            End If
+                        End If
+                    Else
+                        sSqlString = "SELECT " & sFields & " FROM " & QuoteName(sTableName) & " " & _
+                                     "WHERE " & sPKey & " IN (" & _
+                                     "SELECT TOP " & iEndPosition & " " & sPKey & " FROM " & QuoteName(sTableName) & " " & sCondition & sOrderByString & ")"
+                        If iPage>1 Then
+                            sSqlString = sSqlString & " AND " & sPKey & " NOT IN (" & _
+                                         "SELECT TOP " & iStartPosition & " " & sPKey & " FROM " & QuoteName(sTableName) & " " & sCondition & sOrderByString & ")"
+                        End If
+                        sSqlString = sSqlString & sOrderByString
+                    End If
+                Case "MYSQL"
+                    sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString & IIf(iPageSize > 0, " LIMIT " & iStartPosition & "," & IIf(iPage = 1, iPage1Size, iPageSize) , "")
+                Case "ORACLE"
+                    If bDistinct Then
+                        sSqlString = "SELECT * " & _
+                                     "FROM (SELECT KIN_PAGINATION_TABLE1.*, ROWNUM KIN_PAGINATION_PKEY " & _
+                                     "FORM (SELECT DISTINCT " & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString & ") KIN_PAGINATION_TABLE1 " & _
+                                     "WHERE ROWNUM <= " & iEndPosition & ") " & _
+                                     "WHERE KIN_PAGINATION_PKEY > " & iStartPosition
+                    Else
+                        sSqlString = "SELECT " & sFields & " " & _
+                                     "FROM (SELECT KIN_PAGINATION_TABLE1.*, ROWNUM KIN_PAGINATION_PKEY " & _
+                                     "FORM (SELECT * FROM " & QuoteName(sTableName) & sCondition & sOrderByString & ") KIN_PAGINATION_TABLE1 " & _
+                                     "WHERE ROWNUM <= " & iEndPosition & ") " & _
+                                     "WHERE KIN_PAGINATION_PKEY > " & iStartPosition
+                    End If
+                Case Else
+                    sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & IIf(iSpeed = 1, "TOP " & iEndPosition & " ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString
+            End Select
+        Else
+            sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString
+        End If
+    End Sub
+
+    Private Sub CreateCommand(v)
+        Call CreateOrderByString()
+		v = Sgn(to_Int(v))
+		If IsObject(oCommand) And v = 1 Then
+			With oCommand
+				.Parameters.Delete "@bReturn"
+				.Parameters.Append .CreateParameter("@bReturn", 3, 1, 10, v)
+			End With
+		Else
+			Set oCommand = Server.CreateObject("ADODB.Command")
+			With oCommand
+				.CommandType = 4
+				.Prepared = True
+				.ActiveConnection = oConn
+				.CommandText = "sp_Kin_Pagination"
+				.CommandTimeout = iTimeOut
+				.Parameters.Append .CreateParameter("@getSQL", 200, 2, 4000)
+				.Parameters.Append .CreateParameter("@iRecordCount", 3, 2, 4)
+				'-------// Âá∫ÂèÇÁªìÊùü, ÂÖ•ÂèÇÂºÄÂßã //------
+				.Parameters.Append .CreateParameter("@sTableName", 200, 1, 256, QuoteName(sTableName))
+				.Parameters.Append .CreateParameter("@sPKey", 200, 1, 128, sPKey)
+				.Parameters.Append .CreateParameter("@sFields", 200, 1, 1024, sFields)
+				.Parameters.Append .CreateParameter("@sCondition", 200, 1, 2048, sCondition)
+				.Parameters.Append .CreateParameter("@sOrderByString", 200, 1, 1024, sOrderByString)
+				.Parameters.Append .CreateParameter("@sOrderByStringRev", 200, 1, 1024, sOrderByStringRev)
+				.Parameters.Append .CreateParameter("@iPage", 3, 1, 10, iPage)
+				.Parameters.Append .CreateParameter("@iPageSize", 3, 1, 10, iPageSize)
+				.Parameters.Append .CreateParameter("@iPage1Size", 3, 1, 10, IIF(IsNull(iPage1Size), iPageSize, iPage1Size))
+				.Parameters.Append .CreateParameter("@iPageOffSet", 3, 1, 10, iPageOffSet)
+				.Parameters.Append .CreateParameter("@iMaxRecords", 3, 1, 10, iMaxRecords)
+				.Parameters.Append .CreateParameter("@iSpeed", 3, 1, 10, iSpeed)
+				.Parameters.Append .CreateParameter("@bDistinct", 3, 1, 10, to_Int(bDistinct))
+				.Parameters.Append .CreateParameter("@bReturn", 3, 1, 10, v)
+				.Execute()
+				sSqlString = oCommand.Parameters("@getSQL").Value
+				iRecordCount = oCommand.Parameters("@iRecordCount").Value
+			End With
+		End If
+    End Sub
+
+    Private Sub CreateRecordSet()
+        On Error Resume Next
+        Server.ScriptTimeOut = iTimeOut
+        Call getSql()
+        Set oRecordSet = Server.CreateObject("ADODB.RecordSet")
+        Select Case sDbType
+            Case "MSSQL"
+                oRecordSet.Open sSqlString, oConn, 1, 1
+            Case "MSSQLPRODUCE"
+				Call CreateCommand(1)
+                oRecordSet.CursorLocation = 3
+                oRecordSet.LockType = 1
+                oRecordSet.Open oCommand
+            Case "ORACLE"
+                Set oRecordSet = oConn.CreateDynaset(sSqlString, 0)
+            Case "MYSQL"
+                oRecordSet.Open sSqlString, oConn, 1, 1
+            Case Else
+                oRecordSet.Open sSqlString, oConn, 1, 1
+                'If iPageSize > 0 Then oRecordSet.PageSize = iPageSize
+                If Not oRecordSet.EOF Then oRecordSet.AbsolutePosition = iStartPosition + 1
+        End Select
+        If oRecordSet.State = 0 Then
+			doError "[ËÆ∞ÂΩïÈõÜÊú™ÊâìÂºÄÊàñÊâæÂºÄÂ§±Ë¥•„ÄÇ]"
+			oRecordSet.Open "SELECT " & IIf(bDistinct, "DISTINCT ", "") & sFields & " FROM " & QuoteName(sTableName) & " WHERE 1 = 0", oConn, 1, 1
+        End If
+        If Err Then doError Err.Description
+    End Sub
+
+    Property Get RecordSet()
+        On Error Resume Next
+        If IsObject(oRecordSet) Then Exit Property
+        CreateRecordSet()
+        Set RecordSet = oRecordSet
+    End Property
+
+    Property Get GetRows()
+        On Error Resume Next
+        CreateRecordSet()
+        Dim aGetRows
+        If Not oRecordSet.EOF Then
+            aGetRows = oRecordSet.GetRows(iPageSize)
+        Else
+            ReDim aGetRows(oRecordSet.Fields.Count -1, -1)
+        End If
+        GetRows = aGetRows
+    End Property
+
+	Property Get GetJSArray()
+		'Ë¶ÅÊ≥®ÊÑèÂ§ßÂ∞èÂÜô
+        On Error Resume Next
+        CreateRecordSet()
+		GetJSArray = "[["
+        If Not oRecordSet.EOF Then
+			GetJSArray = GetJSArray & oRecordSet.GetString(, , "],[","]],[[", "")
+		End If
+		GetJSArray = Left(GetJSArray, Len(GetJSArray)-3)
+		trace GetJSArray
+	End Property
+
+	Property Get GetJSON()
+		'Ë¶ÅÊ≥®ÊÑèÂ§ßÂ∞èÂÜô
+	End Property
+
+    Property Get PagerStyle()
+        PagerStyle = iPagerStyle
+    End Property
+
+    Property Let PagerGroup(b)
+        bPagerGroup = to_Bool(b)
+    End Property
+
+    Property Let LinkEllipsis(b)
+        bLinkEllipsis = to_Bool(b)
+    End Property
+
+    Property Let PagerSize(n)
+        iPagerSize = to_Int(n)
+    End Property
+
+    Property Let Halt(b)
+        iHaltStatus = Sgn(to_Int(b))
+    End Property
+
+    Public Sub CreateIndex()
+        On Error Resume Next
+        If sDBType <> "MSSQL" Then Exit Sub
+        Trace aOrderBy
+    End Sub
+
+    Property Get PagerInfo()
+        If IsNull(iPageCount) Then CalculatePageCount()
+        PagerInfo = sPagerInfo
+        PagerInfo = Replace(PagerInfo, sRecordCount, to_Int(iMaxRecordCount))
+        PagerInfo = Replace(PagerInfo, sPageCount, to_Int(iMaxPageCount))
+        PagerInfo = Replace(PagerInfo, sPage, to_Int(iPage))
+    End Property
+
+    Private Function ReWrite(n)
+        n = to_Int(n)
+        If Not IsBlank(sRewrite) Then
+            ReWrite = IIf(n > 0, Replace(sReWrite, "*", n), sReWrite)
+        Else
+            ReWrite = sUrl & IIf(n > 0, n, "*")
+        End If
+    End Function
+
+    Property Let ReWritePath(v)
+        Call SetReWritePath(v)
+    End Property
+
+    Private Sub SetReWritePath(v)
+        Dim x, y, z
+        sReWrite = v
+        For Each x In Request.QueryString
+            z = ""
+            For Each y In Request.QueryString(x)
+                If Not IsBlank(y) Then z = z & "-" & Server.URLEncode(y)
+            Next
+            z = Mid(z, 2)
+            If IsBlank(z) Then z = "-"
+            sReWrite = Replace(sReWrite, "{" & x & "}" , z, 1, -1, 1)
+        Next
+    End Sub
+
+    Property Let Separator(v)
+        sSeparator = v
+    End Property
+
+    Property Let Ellipsis(v)
+        sEllipsis = v
+    End Property
+
+    Property Let PagerTop(v)
+        iPagerTop = to_Int(v)
+    End Property
+
+    Property Let FirstPage(v)
+        sFirstPage = v
+    End Property
+
+    Property Let LastPage(v)
+        sLastPage = v
+    End Property
+
+    Property Let PreviousPage(v)
+        sPreviousPage = v
+    End Property
+
+    Property Let NextPage(v)
+        sNextPage = v
+    End Property
+
+    Property Let CurrentPage(v)
+        sCurrentPage = v
+    End Property
+
+    Property Let ListPage(v)
+        sListPage = v
+    End Property
+
+    Property Let MaxRecords(v)
+        iMaxRecords = to_Int(v)
+        If iMaxRecords < 0 Then iMaxRecords = -1
+    End Property
+
+    Property Get RecordCount()
+        If IsNull(iRecordCount) Then CaculateRecordCount()
+        RecordCount = to_Int(iMaxRecordCount)
+    End Property
+
+    Property Get PageSize()
+        PageSize = to_Int(iPageSize)
+    End Property
+
+    Property Get Condition()
+        If IsBlank(sCondition) Then CreateCondition()
+        Condition = sCondition
+    End Property
+
+    Property Get ReWritePath
+        ReWritePath = sReWrite
+    End Property
+
+    Property Get PageCount()
+        If IsNull(iPageCount) Then CalculatePageCount()
+        PageCount = to_Int(iMaxPageCount)
+    End Property
+
+    Property Let Style(v)
+        Call SetPagerStyle(v)
+    End Property
+
+    Property Let PagerStyle(v)
+        Call SetPagerStyle(v)
+    End Property
+
+    Private Sub SetPagerStyle(v)
+        iPagerStyle = v
+        Select Case iPagerStyle
+            Case 0
+            Case 1
+                iPagerSize = 7
+                iPagerTop = 2
+                sFirstPage = "&lt;&lt;"
+                sPreviousPage = "&lt;"
+                sNextPage = "&gt;"
+                sLastPage = "&gt;&gt;"
+            Case 2
+                sFirstPage = "&laquo; First"
+                sPreviousPage = "&#8249; Previous"
+                sNextPage = "Next &#8250;"
+                sLastPage = "Last &raquo;"
+                sPagerInfo = "Page {$Kin_Page} of {$Kin_PageCount} ({$Kin_RecordCount} items)"
+            Case 3
+                iPagerSize = 10
+                bPagerGroup = True
+                sPreviousGroup = "ÂâçÂçÅÈ°µ"
+                sNextGroup = "ÂêéÂçÅÈ°µ"
+            Case 4 '//Only IE
+                iPagerTop = 1
+                iPagerSize = 10
+                bPagerGroup = True
+                sEllipsis = "<font face=""webdings"">`</font>" '//"<font face=""webdings"">q</font>"
+                sCurrentPage = "<font face=""webdings"">;</font>"
+                sListPage = "<font>{$Kin_ListPage}</font>"
+                sFirstPage = "<font face=""webdings"">9</font>"
+                sPreviousGroup = "<font face=""webdings"">7</font>"
+                sPreviousPage = "<font face=""webdings"">3</font>"
+                sNextPage = "<font face=""webdings"">4</font>"
+                sNextGroup = "<font face=""webdings"">8</font>"
+                sLastPage = "<font face=""webdings"">:</font>"
+                sPagerExt = "<style>.listpage{display:none;}</style>"
+                bLinkEllipsis = True
+            Case 5 '//‰∏∫JSË∞ÉÁî®
+                sPagerInfo = "{$Kin_Page},{$Kin_PageCount},{$Kin_RecordCount}"
+            Case Else
+                sEllipsis = "<font color=""#220282"">[‚Ä¶‚Ä¶]</font>"
+                sSeparator = " "
+                sFirstPage = "<font color=""#220282"">[È¶ñÈ°µ]</font>"
+                sPreviousPage = "<font color=""#220282"">[‰∏ä‰∏ÄÈ°µ]</font>"
+                sNextPage = "<font color=""#220282"">[‰∏ã‰∏ÄÈ°µ]</font>"
+                sLastPage = "<font color=""#220282"">[Êú´È°µ]</font>"
+                sListPage = "<font color=""#220282"">[{$Kin_ListPage}]</font>"
+                sCurrentPage = "<font color=""#820222"">[{$Kin_CurrentPage}]</font>"
+                bLinkEllipsis = True
+        End Select
+    End Sub
+
+    Property Get Pager()
+        If IsNull(iPageCount) Then CalculatePageCount()
+        Dim i, ii, iPagerStart, iPagerEnd, sPager
+        If bPagerGroup Then
+            iPagerEnd = iPagerSize * Abs(Int( -1 * (iPage / iPagerSize)))
+        Else
+            iPagerEnd = iPage + to_Int(iPagerSize / 2)
+            If iPagerEnd > iMaxPageCount Then iPagerEnd = iMaxPageCount
+        End If
+        iPagerStart = iPagerEnd - iPagerSize + 1
+        If iPagerStart < 1 Then iPagerStart = 1
+        iPagerEnd = iPagerStart + iPagerSize -1
+        If iPagerEnd > iMaxPageCount Then iPagerEnd = iMaxPageCount
+        ReDim aPager(4), aPager0(0), aPager1( -1), aPager2( -1), aPager3( -1), aPager4(0)
+
+        If sFormMethod = "GET" Then
+            If iPage > 1 Then
+                sPager = IIf(IsBlank(sFirstPage), "", "<a class=""firstpage"" href=""" & Rewrite(1) & """>" & sFirstPage & "</a>")
+                If bPagerGroup Then sPager = sPager & IIf(iPage > iPagerSize, IIf(IsBlank(sPreviousGroup), "", sSeparator & "<a class=""previousgroup"" href=""" & Rewrite(iPage - iPagerSize) & """>" & sPreviousGroup & "</a>"), IIf(IsBlank(sPreviousGroup), "", sSeparator & "<span class=""disabled"">" & sPreviousGroup & "</span>"))
+                sPager = sPager & IIf(IsBlank(sPreviousPage), "", sSeparator & "<a class=""previouspage"" href=""" & Rewrite(iPage -1) & """>" & sPreviousPage & "</a>")
+            Else
+                sPager = IIf(IsBlank(sFirstPage), "", "<span class=""disabled"">" & sFirstPage & "</span>")
+                If bPagerGroup Then sPager = sPager & IIf(IsBlank(sPreviousGroup), "", sSeparator & "<span class=""disabled"">" & sPreviousGroup & "</span>")
+                sPager = sPager & IIf(IsBlank(sPreviousPage), "", sSeparator & "<span class=""disabled"">" & sPreviousPage & "</span>")
+            End If
+            aPager0(0) = sPager
+            If iPagerTop > 0 Then
+                ii = IIf(iPagerTop < iPagerStart, iPagerTop, iPagerStart - 1)
+                ReDim aPager1(ii)
+                For i = 1 To ii
+                    aPager1(i -1) = "<a class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</a>"
+                Next
+                If iPagerTop < iPagerStart -1 Then
+                    If bLinkEllipsis Then
+                        aPager1(ii) = "<a class=""ellipsis"" href=""" & Rewrite(to_Int((iPagerStart + 1 + ii) / 2)) & """>" & sEllipsis & "</a>"
+                    Else
+                        aPager1(ii) = "<span class=""ellipsis"">" & sEllipsis & "</span>"
+                    End If
+                End If
+            End If
+            If iPagerSize > 0 Then
+                ReDim aPager2(iPagerEnd - iPagerStart)
+                For i = iPagerStart To iPagerEnd
+                    If i = iPage Then
+                        aPager2(i - iPagerStart) = "<span class=""current"">" & Replace(sCurrentPage, "{$Kin_CurrentPage}", i, 1, -1, 1) & "</span>"
+                    Else
+                        aPager2(i - iPagerStart) = "<a class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</a>"
+                    End If
+                Next
+            End If
+            If iPagerTop > 0 Then
+                ii = IIf(iMaxPageCount - iPagerTop > iPagerEnd, iMaxPageCount - iPagerTop + 1, iPagerEnd + 1)
+                ReDim aPager3(iMaxPageCount - ii + 1)
+                If iMaxPageCount - iPagerTop > iPagerEnd Then
+                    If bLinkEllipsis Then
+                        aPager3(0) = "<a class=""ellipsis"" href=""" & ReWrite((iMaxPageCount - iPagerTop + iPagerEnd + 1) / 2) & """>" & sEllipsis & "</a>"
+                    Else
+                        aPager3(0) = "<span class=""ellipsis"">" & sEllipsis & "</span>"
+                    End If
+                End If
+                For i = ii To iMaxPageCount
+                    aPager3(i - ii + 1) = "<a class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</a>"
+                Next
+            End If
+            If iMaxPageCount > iPage Then
+                sPager = IIf(IsBlank(sNextPage), "", "<a class=""nextpage"" href=""" & Rewrite(iPage + 1) & """>" & sNextPage & "</a>")
+                If bPagerGroup Then sPager = sPager & IIf(iMaxPageCount > iPagerEnd, IIf(IsBlank(sNextGroup), "", sSeparator & "<a class=""nextgroup"" href=""" & Rewrite(IIf(iPage + iPagerSize > iMaxPageCount, iMaxPageCount, iPage + iPagerSize)) & """>" & sNextGroup & "</a>"), IIf(IsBlank(sNextGroup), "", sSeparator & "<span class=""disabled"">" & sNextGroup & "</span>"))
+                sPager = sPager & IIf(IsBlank(sLastPage), "", sSeparator & "<a class=""lastpage"" href=""" & Rewrite(iMaxPageCount) & """>" & sLastPage & "</a>")
+            Else
+                sPager = IIf(IsBlank(sNextPage), "", "<span class=""disabled"">" & sNextPage & "</span>")
+                If bPagerGroup Then sPager = sPager & IIf(IsBlank(sNextGroup), "", sSeparator & "<span class=""disabled"">" & sNextGroup & "</span>")
+                sPager = sPager & IIf(IsBlank(sLastPage), "", sSeparator & "<span class=""disabled"">" & sLastPage & "</span>")
+            End If
+            aPager4(0) = sPager
+            aPager(0) = Join(aPager0, sSeparator)
+            aPager(1) = Join(aPager1, sSeparator)
+            aPager(2) = Join(aPager2, sSeparator)
+            aPager(3) = Join(aPager3, sSeparator)
+            aPager(4) = Join(aPager4, sSeparator)
+            Pager = IIf(IsBlank(aPager(0)), "", aPager(0)) & IIf(IsBlank(aPager(1)), "", sSeparator & aPager(1)) & IIf(IsBlank(aPager(2)), "", sSeparator & aPager(2)) & IIf(IsBlank(aPager(3)), "", sSeparator & aPager(3)) & IIf(IsBlank(aPager(4)), "", sSeparator & aPager(4))
+            Pager = Pager & sPagerExt
+        Else
+            If iPage > 1 Then
+                sPager = IIf(IsBlank(sFirstPage), "", "<button type=""button"" class=""firstpage"" href=""" & Rewrite(1) & """>" & sFirstPage & "</button>")
+                If bPagerGroup Then sPager = sPager & IIf(iPage > iPagerSize, IIf(IsBlank(sPreviousGroup), "", sSeparator & "<button class=""previousgroup"" href=""" & Rewrite(iPage - iPagerSize) & """>" & sPreviousGroup & "</button>"), IIf(IsBlank(sPreviousGroup), "", sSeparator & "<span class=""disabled"">" & sPreviousGroup & "</span>"))
+                sPager = sPager & IIf(IsBlank(sPreviousPage), "", sSeparator & "<button class=""previouspage"" href=""" & Rewrite(iPage -1) & """>" & sPreviousPage & "</button>")
+            Else
+                sPager = IIf(IsBlank(sFirstPage), "", "<span class=""disabled"">" & sFirstPage & "</span>")
+                If bPagerGroup Then sPager = sPager & IIf(IsBlank(sPreviousGroup), "", sSeparator & "<span class=""disabled"">" & sPreviousGroup & "</span>")
+                sPager = sPager & IIf(IsBlank(sPreviousPage), "", sSeparator & "<span class=""disabled"">" & sPreviousPage & "</span>")
+            End If
+            aPager0(0) = sPager
+            If iPagerTop > 0 Then
+                ii = IIf(iPagerTop < iPagerStart, iPagerTop, iPagerStart - 1)
+                ReDim aPager1(ii)
+                For i = 1 To ii
+                    aPager1(i -1) = "<button class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</button>"
+                Next
+                If iPagerTop < iPagerStart -1 Then
+                    If bLinkEllipsis Then
+                        aPager1(ii) = "<button class=""ellipsis"" href=""" & Rewrite(to_Int((iPagerStart + 1 + ii) / 2)) & """>" & sEllipsis & "</button>"
+                    Else
+                        aPager1(ii) = "<span class=""ellipsis"">" & sEllipsis & "</span>"
+                    End If
+                End If
+            End If
+            If iPagerSize > 0 Then
+                ReDim aPager2(iPagerEnd - iPagerStart)
+                For i = iPagerStart To iPagerEnd
+                    If i = iPage Then
+                        aPager2(i - iPagerStart) = "<span class=""current"">" & Replace(sCurrentPage, "{$Kin_CurrentPage}", i, 1, -1, 1) & "</span>"
+                    Else
+                        aPager2(i - iPagerStart) = "<button class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</button>"
+                    End If
+                Next
+            End If
+            If iPagerTop > 0 Then
+                ii = IIf(iMaxPageCount - iPagerTop > iPagerEnd, iMaxPageCount - iPagerTop + 1, iPagerEnd + 1)
+                ReDim aPager3(iMaxPageCount - ii + 1)
+                If iMaxPageCount - iPagerTop > iPagerEnd Then
+                    If bLinkEllipsis Then
+                        aPager3(0) = "<button class=""ellipsis"" href=""" & ReWrite((iMaxPageCount - iPagerTop + iPagerEnd + 1) / 2) & """>" & sEllipsis & "</button>"
+                    Else
+                        aPager3(0) = "<span class=""ellipsis"">" & sEllipsis & "</span>"
+                    End If
+                End If
+                For i = ii To iMaxPageCount
+                    aPager3(i - ii + 1) = "<button class=""listpage"" href=""" & ReWrite(i) & """>" & Replace(sListPage, "{$Kin_ListPage}", i, 1, -1, 1) & "</button>"
+                Next
+            End If
+            If iMaxPageCount > iPage Then
+                sPager = IIf(IsBlank(sNextPage), "", "<button class=""nextpage"" href=""" & Rewrite(iPage + 1) & """>" & sNextPage & "</button>")
+                If bPagerGroup Then sPager = sPager & IIf(iMaxPageCount > iPagerEnd, IIf(IsBlank(sNextGroup), "", sSeparator & "<button class=""nextgroup"" href=""" & Rewrite(IIf(iPage + iPagerSize > iMaxPageCount, iMaxPageCount, iPage + iPagerSize)) & """>" & sNextGroup & "</button>"), IIf(IsBlank(sNextGroup), "", sSeparator & "<span class=""disabled"">" & sNextGroup & "</span>"))
+                sPager = sPager & IIf(IsBlank(sLastPage), "", sSeparator & "<button class=""lastpage"" href=""" & Rewrite(iMaxPageCount) & """>" & sLastPage & "</button>")
+            Else
+                sPager = IIf(IsBlank(sNextPage), "", "<span class=""disabled"">" & sNextPage & "</span>")
+                If bPagerGroup Then sPager = sPager & IIf(IsBlank(sNextGroup), "", sSeparator & "<span class=""disabled"">" & sNextGroup & "</span>")
+                sPager = sPager & IIf(IsBlank(sLastPage), "", sSeparator & "<span class=""disabled"">" & sLastPage & "</span>")
+            End If
+            aPager4(0) = sPager
+            aPager(0) = Join(aPager0, sSeparator)
+            aPager(1) = Join(aPager1, sSeparator)
+            aPager(2) = Join(aPager2, sSeparator)
+            aPager(3) = Join(aPager3, sSeparator)
+            aPager(4) = Join(aPager4, sSeparator)
+            Pager = IIf(IsBlank(aPager(0)), "", aPager(0)) & IIf(IsBlank(aPager(1)), "", sSeparator & aPager(1)) & IIf(IsBlank(aPager(2)), "", sSeparator & aPager(2)) & IIf(IsBlank(aPager(3)), "", sSeparator & aPager(3)) & IIf(IsBlank(aPager(4)), "", sSeparator & aPager(4))
+            Pager = Pager & sPagerExt
+			Pager = "<form method=""post"" target=""" & sUrl & """>" & Pager
+			Pager = Pager & sForm
+			Pager = Pager & ""
+			Pager = Pager & "</form>"
+        End If
+    End Property
+
+	Function JumpInput()
+	
+	End Function
+
+	Function JumpButton()
+	
+	End Function
+	
+	Function JumpMenu()
+	
+	End Function
+	
+    Property Get JumpPager(arglist, sJumpPagerAttr)
+        If IsNull(iPageCount) Then CalculatePageCount()
+        Dim iStart, iEnd, sJumpPager, i, j, sRandomize, iUBound
+        If Not IsArray(arglist) Then arglist = Split(UCase(to_Str(arglist)), ",")
+        iUBound = UBound(arglist)
+        sRandomize = "Kin_Pagination" & to_Int(Rnd() * 29252888)
+        sJumpPager = vbCrLf & "<scr" & "ipt type=""text/javascr" & "ipt"">function " & sRandomize & "(o){if(!(o)){alert('err');return false}var s" & sRandomize & "=o.value.split('/')[0];if(!isNaN(s" & sRandomize & ")&&s" & sRandomize & ".length>0){document.location.href=" & Replace("'" & Rewrite(0) & "'", "*", "'+s" & sRandomize & "+'") & "}return false}</script>" & vbCrLf
+        For i = 0 To iUBound
+            Select Case UCase(to_Str(arglist(i)))
+                Case "INPUT", "BUTTON"
+                    j = Len(iMaxPageCount)
+                    sJumpPager = sJumpPager & "<input id=""" & sRandomize & "_input"" onkeydown=""if(event.keyCode==13){" & sRandomize & "(this)}"" type=""text"" title=""&#35831;&#36755;&#20837;&#25968;&#23383;&#10;&#13;&#22238;&#36710;&#36339;&#36716;"" size=""" & IIf(j < 3, 3, j) & """ maxlength=""" & j * 2 & """ value=""" & iPage & """ " & sJumpPagerAttr & " />" & vbCrLf
+                    If UCase(to_Str(arglist(i))) = "BUTTON" Then sJumpPager = sJumpPager & "<button id=""" & sRandomize & "_button"" onclick=""" & sRandomize & "(document.getElementById('" & sRandomize & "_input'))"" " & sJumpPagerAttr & " >GO</button>" & vbCrLf
+                Case Else
+                    sJumpPager = sJumpPager & "<select id=""" & sRandomize & "_select"" onChange=""" & sRandomize & "(this)"" " & sJumpPagerAttr & "„ÄÄ>" & vbCrLf
+                    iEnd = iPage + 100
+                    If iEnd > iMaxPageCount Then iEnd = iMaxPageCount
+                    iStart = iPage - 100
+                    If iStart < 1 Then iStart = 1
+                    For j = iStart To iEnd
+                        sJumpPager = sJumpPager & "<option value=""" & j & """" & IIf(j = iPage, " selected=""selected"" ", "") & ">"&j&"</option>" & vbCrLf
+                    Next
+                    sJumpPager = sJumpPager & "</select>" & vbCrLf
+            End Select
+        Next
+        JumpPager = sJumpPager
+    End Property
+
+    Public Function Clone()
+        If Not IsObject(oRecordSet) Then doError "ÈúÄË¶Å‰ΩøÁî®.RecordSet()Êàñ.GetRows()Êàñ.getSQL()ÊñπÊ≥ï‰πãÂêéÊâçÂèØ‰ΩøÁî®„ÄÇ"
+        Set Clone = New Kin_Db_Pager
+        Clone.Connect(oConn)
+        Clone.TableName = sTableName
+        Clone.PKey = sPKey
+        Clone.Fields = sFields
+        Clone.OrderBy = sOrderByString
+        Clone.Distinct = bDistinct
+        Clone.Distinct = bDistinct
+        Clone.FirstPage = sFirstPage
+        Clone.PreviousPage = sPreviousPage
+        Clone.NextPage = sNextPage
+        Clone.LastPage = sLastPage
+        Clone.PagerTop = iPagerTop
+        Clone.PageList = sPageList
+        Clone.LinkEllipsis = bLinkEllipsis
+        Clone.Ellipsis = sEllipsis
+        Clone.Separator = sSeparator
+        Clone.OrderBy = sOrderByString
+        Clone.Condition = Mid(sCondition, 7)
+    End Function
+
+    Property Let PagerExt(v)
+        sPagerExt = to_Str(v)
+    End Property
+
+	Public Function Template()
+		Dim oDictionary
+		oDictionary("$pagesize") = iPageSize
+		oDictionary("$pagecount") = iPageCount
+		oDictionary("$recordcount") = iRecordCount
+		oDictionary("$firstpage") = sFirstPage
+		oDictionary("$previouspage") = sPreviousPage
+		oDictionary("$nextpage") = sNextPage
+		oDictionary("$lastpage") = sLastPage
+		oDictionary("$lastpage") = sLastPage
+		oDictionary("$lastpage") = sLastPage
+		oDictionary("$lastpage") = sLastPage
+		oDictionary("$lastpage") = sLastPage
+		oDictionary("$lastpage") = sLastPage
+		Template = oDictionary
+	End Function
+
+End Class
+
+
+
+
+'// .TemplateHead = "<table>"
+'// .TemplateBody = "<tr><td>{$News_ID}</td><td>{$News_Title}</td><td>{$News_DateTime}</td></tr>"
+'// .TemplateFoot = "</table>"
+'// .TemplateAssign("News_DateTime", FormatDate("News_Article", "aaaaaa"))
+
+
+
+
 %>
