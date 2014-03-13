@@ -14,9 +14,9 @@
 
 <body>
 <p>在页面中写入一行代码：</p>
-<p>&lt;!--#include <span class="style1">file</span>=<span class="style2">&quot;Kin_Db_Pager.asp</span>&quot; --&gt;&lt;%Eg()%&gt;</p>
+<p>&lt;!--#include <span class="style1">file</span>=<span class="style2">&quot;Kin_Db_Pager.asp</span>&quot; --&gt;&lt;%Call (New Kin_db_Pager).help()%&gt;</p>
 <p>回浏览器中刷新页面即可看到如下帮助信息： </p>
-<%Eg()%>
+<%Call (New Kin_db_Pager).help()%>
 <p>将上段代码Copy到&lt;% %&gt;块中就是 <a href="http://jorkin.reallydo.com/article.asp?id=534" target="_blank">Kin_Db_Pager</a> 的使用模板。</p>
 <div style="display:none">
   <script language="javascript" type="text/javascript" src="http://js.users.51.la/2782986.js"></script>
