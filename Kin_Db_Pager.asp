@@ -861,7 +861,7 @@ Class Kin_Db_Pager
                                      "WHERE KIN_PAGINATION_PKEY > " & iStartPosition
                     End If
                 Case Else
-                    sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & IIf(iSpeed = 1, "TOP " & iEndPosition & " ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString
+                    sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & IIf(iSpeed = 1 And iEndPosition > 0, "TOP " & iEndPosition & " ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString
             End Select
         Else
             sSqlString = "SELECT " & IIf(bDisTinct, "DISTINCT ", "") & sFields & " FROM " & QuoteName(sTableName) & sCondition & sOrderByString
