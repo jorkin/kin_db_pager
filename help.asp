@@ -1,9 +1,9 @@
-<!--#include file="Kin_Db_Pager.asp" -->
+﻿<!--#include file="Kin_Db_Pager.asp" -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>Kin_Db_Pager�����ļ�</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Kin_Db_Pager帮助文件</title>
 <style type="text/css">
 <!--
 .style1 {color: #990099}
@@ -13,11 +13,11 @@
 </head>
 
 <body>
-<p>��ҳ����д��һ�д��룺</p>
+<p>在页面中写入一行代码：</p>
 <p>&lt;!--#include <span class="style1">file</span>=<span class="style2">&quot;Kin_Db_Pager.asp</span>&quot; --&gt;&lt;%Eg()%&gt;</p>
-<p>���������ˢ��ҳ�漴�ɿ������°�����Ϣ�� </p>
+<p>回浏览器中刷新页面即可看到如下帮助信息： </p>
 <%Eg()%>
-<p>���϶δ���Copy��&lt;% %&gt;���о��� <a href="http://jorkin.reallydo.com/article.asp?id=534" target="_blank">Kin_Db_Pager</a> ��ʹ��ģ�塣</p>
+<p>将上段代码Copy到&lt;% %&gt;块中就是 <a href="http://jorkin.reallydo.com/article.asp?id=534" target="_blank">Kin_Db_Pager</a> 的使用模板。</p>
 <div style="display:none">
   <script language="javascript" type="text/javascript" src="http://js.users.51.la/2782986.js"></script>
   <noscript>

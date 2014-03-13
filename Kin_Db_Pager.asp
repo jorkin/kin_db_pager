@@ -937,7 +937,6 @@ Class Kin_Db_Pager
 
     Property Get RecordSet()
         On Error Resume Next
-        If IsObject(oRecordSet) Then Exit Property
         CreateRecordSet()
         Set RecordSet = oRecordSet
     End Property

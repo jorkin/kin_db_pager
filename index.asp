@@ -1,222 +1,222 @@
-<!--#include file="Conn.asp" -->
+ï»¿<!--#include file="Conn.asp" -->
 <!--#include file="Kin_Db_Pager.asp" -->
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="Style/css.css" media="all" />
 <style>
 body {
 	background-color:#FFFFFF;
 }
 </style>
-<title>Kin_Db_Pager ·ÖÒ³Àà - KinJAVAÈÕÖ¾</title>
+<title>Kin_Db_Pager åˆ†é¡µç±» - KinJAVAæ—¥å¿—</title>
 </head>
 <body>
-<p>Kin_Db_Pager ·ÖÒ³Àà(<a href="http://jorkin.reallydo.com" target="_blank">KinJAVAÈÕÖ¾</a> <a href="http://jorkin.reallydo.com/article.asp?id=534" target="_blank">ÏÂÔØ</a>) <a href="help.asp">Ê¹ÓÃ°ïÖú</a></p>
+<p>Kin_Db_Pager åˆ†é¡µç±»(<a href="http://jorkin.me" target="_blank">KinJAVAæ—¥å¿—</a> <a href="http://jorkin.me/kin_db_pager" target="_blank">ä¸‹è½½</a>) <a href="help.asp">ä½¿ç”¨å¸®åŠ©</a></p>
 <%
 '//-----------------------------------------------------------------------------
-'// ¶¨ÒåEg()ÑùÀıÏà¹Ø±äÁ¿ Èç¹ûÎ´Ê¹ÓÃOption Explicit¿ÉÊ¡ÂÔ
+'// å®šä¹‰Eg()æ ·ä¾‹ç›¸å…³å˜é‡ å¦‚æœæœªä½¿ç”¨Option Explicitå¯çœç•¥
 '//-----------------------------------------------------------------------------
 'Dim i, iCols, iColsPercent, iPageSize
 'Dim iCurrPage, iRecordCount, iPageCount
-'Dim sPageInfo, sPager, sJumpPage
+'Dim sPagerInfo, sPager, sJumpPager
 Dim oDbPager
 '//-----------------------------------------------------------------------------
-'// Kin_Db_Pager·ÖÒ³Àà¿ªÊ¼
+'// Kin_Db_Pageråˆ†é¡µç±»å¼€å§‹
 '//-----------------------------------------------------------------------------
 iPageSize = 15
 Set oDbPager = New Kin_db_Pager
 '//-----------------------------------------------------------------------------
-'// ½øĞĞÊı¾İ¿â²éÑ¯Ç°µÄÏà¹Ø²ÎÊıÉèÖÃ
+'// è¿›è¡Œæ•°æ®åº“æŸ¥è¯¢å‰çš„ç›¸å…³å‚æ•°è®¾ç½®
 '//-----------------------------------------------------------------------------
-'//Ö¸¶¨Êı¾İ¿âÁ¬½Ó
-oDbPager.Connect(oConn) '//·½·¨Ò»(ÍÆ¼ö)
-'Set oDbPager.ActiveConnection = oConn '//·½·¨¶ş
-'oDbPager.ConnectionString = oConn.ConnectionString '//·½·¨Èı
-'//Ö¸¶¨±íÊ¾Ò³ÊıµÄURL±äÁ¿ Ä¬ÈÏÖµ:"page"
+'//æŒ‡å®šæ•°æ®åº“è¿æ¥
+oDbPager.Connect(oConn) '//æ–¹æ³•ä¸€(æ¨è)
+'Set oDbPager.ActiveConnection = oConn '//æ–¹æ³•äºŒ
+'oDbPager.ConnectionString = oConn.ConnectionString '//æ–¹æ³•ä¸‰
+'//æŒ‡å®šè¡¨ç¤ºé¡µæ•°çš„URLå˜é‡ é»˜è®¤å€¼:"page"
 oDbPager.PageParam = "page"
-'//Ö¸¶¨Êı¾İ¿âÀàĞÍ.Ä¬ÈÏÖµ:"MSSQL"
+'//æŒ‡å®šæ•°æ®åº“ç±»å‹.é»˜è®¤å€¼:"MSSQL"
 oDbPager.DbType = "ACCESS"
-'//Ö¸¶¨Ä¿±ê±í ¿ÉÓÃÁÙÊ±±í"(Select * From [Table])"
+'//æŒ‡å®šç›®æ ‡è¡¨ å¯ç”¨ä¸´æ—¶è¡¨"(Select * From [Table])"
 oDbPager.TableName = "Kin_Article"
-'//Ñ¡ÔñÁĞ ÓÃ¶ººÅ·Ö¸ô Ä¬ÈÏÖµ:"*"
+'//é€‰æ‹©åˆ— ç”¨é€—å·åˆ†éš” é»˜è®¤å€¼:"*"
 oDbPager.Fields = "*"
-'//Ö¸¶¨¸Ã±íµÄÖ÷¼ü
+'//æŒ‡å®šè¯¥è¡¨çš„ä¸»é”®
 oDbPager.PKey = "Article_ID"
-'//Ö¸¶¨ÅÅĞòÌõ¼ş
+'//æŒ‡å®šæ’åºæ¡ä»¶
 oDbPager.OrderBy = "Article_ID DESC"
-'//Ìí¼ÓÌõ¼ş ¿É¶à´ÎÊ¹ÓÃ.Èç¹ûÓÃOrÌõ¼şĞèÒª(Ìõ¼ş1 Or Ìõ¼ş2 Or ...)
+'//æ·»åŠ æ¡ä»¶ å¯å¤šæ¬¡ä½¿ç”¨.å¦‚æœç”¨Oræ¡ä»¶éœ€è¦(æ¡ä»¶1 Or æ¡ä»¶2 Or ...)
 oDbPager.AddCondition "Article_Status > 0"
 oDbPager.AddCondition "(Article_ID < 104 Or Article_ID > 222)"
-'//Ö¸¶¨Ã¿Ò³¼ÇÂ¼¼¯ÊıÁ¿
+'//æŒ‡å®šæ¯é¡µè®°å½•é›†æ•°é‡
 oDbPager.PageSize = iPageSize
-'//Ö¸¶¨µ±Ç°Ò³Êı
+'//æŒ‡å®šå½“å‰é¡µæ•°
 oDbPager.Page = Request.QueryString(oDbPager.PageParam)
-'//Ò²¿ÉÒÔÖ±½ÓÊ¹ÓÃ×Ô¶¨ÒåµÄSQLÓï¾äÑ¡È¡¼ÇÂ¼¼¯
+'//ä¹Ÿå¯ä»¥ç›´æ¥ä½¿ç”¨è‡ªå®šä¹‰çš„SQLè¯­å¥é€‰å–è®°å½•é›†
 'oDbPager.Sql = "Select * From Kin_Article Where Article_ID < 222 Order By Article_ID Desc"
-'//Êä³öSQLÓï¾ä ·½±ãµ÷ÊÔ
+'//è¾“å‡ºSQLè¯­å¥ æ–¹ä¾¿è°ƒè¯•
 'Response.Write(oDbPager.GetSql())
 'Response.End()
 Set oRs = oDbPager.Recordset
 '//-----------------------------------------------------------------------------
-'// ¶Ô¸Ã¼ÇÂ¼¼¯µÄ·ÖÒ³ÑùÊ½¼°Ä£°å½øĞĞÉèÖÃ(²»ÉèÖÃÔòÊ¹ÓÃÄ¬ÈÏÑùÊ½)
+'// å¯¹è¯¥è®°å½•é›†çš„åˆ†é¡µæ ·å¼åŠæ¨¡æ¿è¿›è¡Œè®¾ç½®(ä¸è®¾ç½®åˆ™ä½¿ç”¨é»˜è®¤æ ·å¼)
 '//-----------------------------------------------------------------------------
-'//Ñ¡Ôñ ·ÖÒ³Á´½Ó Êä³öµÄÑùÊ½
-'//Îª0: ¿ÉÒÔÊ¹ÓÃÑùÊ½±í¶Ô·ÖÒ³Á´½Ó½øĞĞÃÀ»¯(http://jorkin.reallydo.com/kin_db_pager/?page=10)
-'//Îª1: ¿ÉÊ¹ÓÃ<font>µÈHTML´úÂë½øĞĞÑÕÉ«ÉèÖÃ
+'//é€‰æ‹© åˆ†é¡µé“¾æ¥ è¾“å‡ºçš„æ ·å¼
+'//ä¸º0: å¯ä»¥ä½¿ç”¨æ ·å¼è¡¨å¯¹åˆ†é¡µé“¾æ¥è¿›è¡Œç¾åŒ–(http://jorkin.reallydo.com/kin_db_pager/?page=10)
+'//ä¸º1: å¯ä½¿ç”¨<font>ç­‰HTMLä»£ç è¿›è¡Œé¢œè‰²è®¾ç½®
 'oDbPager.Style = 0
-'//¶¨Òå Ê×Ò³/ÉÏÒ»Ò³/ÏÂÒ»Ò³/Ä©Ò³ Á´½ÓÑùÊ½(Ö§³ÖHTML)
+'//å®šä¹‰ é¦–é¡µ/ä¸Šä¸€é¡µ/ä¸‹ä¸€é¡µ/æœ«é¡µ é“¾æ¥æ ·å¼(æ”¯æŒHTML)
 'oDbPager.FirstPage = "&lt;&lt;"
-'oDbPager.PreviewPage = "&lt;"
+'oDbPager.PreviousPage = "&lt;"
 'oDbPager.NextPage = "&gt;"
 'oDbPager.LastPage = "&gt;&gt;"
-'//¶¨Òå µ±Ç°Ò³/ÁĞ±íÒ³ Á´½ÓÑùÊ½ {$CurrentPage}{$ListPage}½«±»Ìæ»»³É µ±Ç°Ò³/ÁĞ±íÒ³ µÄÊı×Ö
+'//å®šä¹‰ å½“å‰é¡µ/åˆ—è¡¨é¡µ é“¾æ¥æ ·å¼ {$CurrentPage}{$ListPage}å°†è¢«æ›¿æ¢æˆ å½“å‰é¡µ/åˆ—è¡¨é¡µ çš„æ•°å­—
 'oDbPager.CurrentPage = "{$CurrentPage}"
 'oDbPager.ListPage = "{$ListPage}"
-'//¶¨Òå·ÖÒ³ÁĞ±íÇ°ºóÒªÏÔÊ¾¼¸¸öÁ´½Ó Èç12...456...78 Ä¬ÈÏÎª0
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨å‰åè¦æ˜¾ç¤ºå‡ ä¸ªé“¾æ¥ å¦‚12...456...78 é»˜è®¤ä¸º0
 'oDbPager.PagerTop = 2
-'//¶¨Òå·ÖÒ³ÁĞ±í×î´óÊıÁ¿ Ä¬ÈÏÎª7
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨æœ€å¤§æ•°é‡ é»˜è®¤ä¸º7
 'oDbPager.PagerSize = 5
-'//¶¨Òå¼ÇÂ¼¼¯×ÛºÏĞÅÏ¢
-'oDbPager.PageInfo = "¹²ÓĞ {$Kin_RecordCount} ¼ÇÂ¼ Ò³´Î:{$Kin_Page}/{$Kin_PageCount}"
-'//×Ô¶¨ÒåISAPI_REWRITEÂ·¾¶ * ºÅ ½«±»Ìæ»»Îªµ±Ç°Ò³Êı
+'//å®šä¹‰è®°å½•é›†ç»¼åˆä¿¡æ¯
+'oDbPager.PagerInfo = "å…±æœ‰ {$Kin_RecordCount} è®°å½• é¡µæ¬¡:{$Kin_Page}/{$Kin_PageCount}"
+'//è‡ªå®šä¹‰ISAPI_REWRITEè·¯å¾„ * å· å°†è¢«æ›¿æ¢ä¸ºå½“å‰é¡µæ•°
 'oDbPager.RewritePath = "Article/*.html"
-'//¶¨ÒåÌø×ªÁĞ±íÎª<INPUT>ÎÄ±¾¿ò Ä¬ÈÏÎª"SELECT"
-'oDbPager.JumpPageType = "INPUT"
-'//¶¨ÒåÒ³ÃæÌøµÄSELECT/INPUTµÄÑùÊ½(HTML´úÂë)
-'oDbPager.JumpPageAttr = "class=""reallydo"" style=""color:#820222"""
+'//å®šä¹‰è·³è½¬åˆ—è¡¨ä¸º<INPUT>æ–‡æœ¬æ¡† é»˜è®¤ä¸º"SELECT"
+'oDbPager.JumpPagerType = "INPUT"
+'//å®šä¹‰é¡µé¢è·³çš„SELECT/INPUTçš„æ ·å¼(HTMLä»£ç )
+'oDbPager.JumpPagerAttr = "class=""reallydo"" style=""color:#820222"""
 '//-----------------------------------------------------------------------------
-'// »ñÈ¡ËùĞèÒª±äÁ¿ÒÔ±ã½øĞĞÊä³ö
+'// è·å–æ‰€éœ€è¦å˜é‡ä»¥ä¾¿è¿›è¡Œè¾“å‡º
 '//-----------------------------------------------------------------------------
-'//»ñÈ¡µ±Ç°Ò³Âë
+'//è·å–å½“å‰é¡µç 
 'iCurrPage = oDbPager.Page
-'//»ñÈ¡¼ÇÂ¼¼¯ÊıÁ¿
+'//è·å–è®°å½•é›†æ•°é‡
 'iRecordCount = oDbPager.RecordCount
-'//»ñÈ¡Ò³Ãæ×Ü¼ÆÊıÁ¿
+'//è·å–é¡µé¢æ€»è®¡æ•°é‡
 'iPageCount = oDbPager.PageCount
-'//»ñÈ¡¼ÇÂ¼¼¯ĞÅÏ¢
-sPageInfo = oDbPager.PageInfo
-'//»ñÈ¡·ÖÒ³ĞÅÏ¢
+'//è·å–è®°å½•é›†ä¿¡æ¯
+sPagerInfo = oDbPager.PagerInfo
+'//è·å–åˆ†é¡µä¿¡æ¯
 sPager = oDbPager.Pager
-'//»ñÈ¡Ìø×ªÁĞ±í
-sJumpPage = oDbPager.JumpPage
+'//è·å–è·³è½¬åˆ—è¡¨
+sJumpPager = oDbPager.JumpPager("BUTTON", "")
 %>
-¶àĞĞ¶àÁĞ ·½·¨Ò»(ÌîÂúÕû¸ö±í¸ñ)<br />
+å¤šè¡Œå¤šåˆ— æ–¹æ³•ä¸€(å¡«æ»¡æ•´ä¸ªè¡¨æ ¼)<br />
 <%
 '//-----------------------------------------------------------------------------
-'// Àı×Ó: ¶¯Ì¬Êä³öMĞĞNÁĞ, ¶àĞĞ¶àÁĞ, Ñ­»·ĞĞÁĞ, Ñ­»·TABLE
+'// ä¾‹å­: åŠ¨æ€è¾“å‡ºMè¡ŒNåˆ—, å¤šè¡Œå¤šåˆ—, å¾ªç¯è¡Œåˆ—, å¾ªç¯TABLE
 '//-----------------------------------------------------------------------------
-'//³õÊ¼»¯i×¼±¸Ñ­»·
+'//åˆå§‹åŒ–iå‡†å¤‡å¾ªç¯
 i = 0
-'//¶¨ÒåÒ»ĞĞ×î¶àÓĞ¼¸ÁĞ(ÕıÕûÊı)
+'//å®šä¹‰ä¸€è¡Œæœ€å¤šæœ‰å‡ åˆ—(æ­£æ•´æ•°)
 iCols = 3
 iColsPercent = FormatPercent(1 / iCols, 0)
-'//Êä³öTABLE±íÍ·
+'//è¾“å‡ºTABLEè¡¨å¤´
 Response.Write("<table width=""100%"" border=""0"" cellspacing=""1"" cellpadding=""2"" bgcolor=""#000000""><tr>")
-'//Ñ­»·¿ªÊ¼ (i < iPageSize)Ìõ¼şÎªACCESS·ÖÒ³Ê±±ØÒª
+'//å¾ªç¯å¼€å§‹ (i < iPageSize)æ¡ä»¶ä¸ºACCESSåˆ†é¡µæ—¶å¿…è¦
 Do While Not oRs.EOF
-   '//Ã¿ĞĞÀıÂúÁË¾Í¼ÓÒ»¸öĞÂĞĞ
+   '//æ¯è¡Œä¾‹æ»¡äº†å°±åŠ ä¸€ä¸ªæ–°è¡Œ
    If i > 0 And i Mod iCols = 0 Then Response.Write("</tr><tr>")
    i = i + 1
    Response.Write("<td width=""" & iColsPercent & """ bgcolor=""#CCE8CF""><font color=""#000000"">" & Server.HTMLEncode(oRs(2)) & "</font></td>")
    oRs.MoveNext
 Loop
-'//Ñ­»·½áÊø ¿ªÊ¼²¹¿ÕÈ±µÄÁĞ
+'//å¾ªç¯ç»“æŸ å¼€å§‹è¡¥ç©ºç¼ºçš„åˆ—
 Do While i < iPageSize
-   '//ÒÔÏÂÁ½¸öÌõ¼ş¶şÑ¡Ò»
+   '//ä»¥ä¸‹ä¸¤ä¸ªæ¡ä»¶äºŒé€‰ä¸€
    If i Mod iCols = 0 Then
-       Response.Write("</tr><tr>") '//Èç¹ûÒª²¹ÂúÕû¸ö±í¸ñ¾Í¼ÌĞøÊä³ö<tr></tr>
-       'Exit Do '//Èç¹ûÖ»²¹Âú×îºóÒ»ĞĞ¾ÍÖ±½Ó½áÊø
+       Response.Write("</tr><tr>") '//å¦‚æœè¦è¡¥æ»¡æ•´ä¸ªè¡¨æ ¼å°±ç»§ç»­è¾“å‡º<tr></tr>
+       'Exit Do '//å¦‚æœåªè¡¥æ»¡æœ€åä¸€è¡Œå°±ç›´æ¥ç»“æŸ
    End If
    i = i + 1
-   Response.Write("<td width="""&FormatPercent(1 / iCols, 0)&""" bgcolor=""#CCCCCC""><font color=""red"">ÌîÂúÕû¸ö±í¸ñ</font></td>")
+   Response.Write("<td width="""&FormatPercent(1 / iCols, 0)&""" bgcolor=""#CCCCCC""><font color=""red"">å¡«æ»¡æ•´ä¸ªè¡¨æ ¼</font></td>")
 Loop
-'//Êä³ö·ÖÒ³ĞÅÏ¢/ÑùÊ½/TABLEÎ²
-Response.Write("</tr><tr><td colspan=""" & iCols & """ bgcolor=""#CCE8CF""><div style=""float:right"">" & sPager & " ÏÂÀ­Ìø×ª: " & sJumpPage & " Ò³</div>" & sPageInfo & "</td></tr></table>")
+'//è¾“å‡ºåˆ†é¡µä¿¡æ¯/æ ·å¼/TABLEå°¾
+Response.Write("</tr><tr><td colspan=""" & iCols & """ bgcolor=""#CCE8CF""><div style=""float:right"">" & sPager & " ä¸‹æ‹‰è·³è½¬: " & sJumpPager & " é¡µ</div>" & sPagerInfo & "</td></tr></table>")
 %>
-¶àĞĞ¶àÁĞ ·½·¨¶ş(Ö»ÌîÂú×îºóÒ»ĞĞ)<br />
+å¤šè¡Œå¤šåˆ— æ–¹æ³•äºŒ(åªå¡«æ»¡æœ€åä¸€è¡Œ)<br />
 <%
 Set oRs = oDbPager.Recordset
 oDbPager.RewritePath = "http://down.chinaz.com/soft/24767.htm#*.html"" target=""_blank"
 sPager = oDbPager.Pager
-oDbPager.JumpPageType = "INPUT"
-sJumpPage = oDbPager.JumpPage
+'oDbPager.JumpPagerType = "INPUT"
+sJumpPager = oDbPager.JumpPager("BUTTON","")
 '//-----------------------------------------------------------------------------
-'// Àı×Ó: ¶¯Ì¬Êä³öMĞĞNÁĞ, ¶àĞĞ¶àÁĞ, Ñ­»·ĞĞÁĞ, Ñ­»·TABLE
+'// ä¾‹å­: åŠ¨æ€è¾“å‡ºMè¡ŒNåˆ—, å¤šè¡Œå¤šåˆ—, å¾ªç¯è¡Œåˆ—, å¾ªç¯TABLE
 '//-----------------------------------------------------------------------------
-'//³õÊ¼»¯i×¼±¸Ñ­»·
+'//åˆå§‹åŒ–iå‡†å¤‡å¾ªç¯
 i = 0
-'//¶¨ÒåÒ»ĞĞ×î¶àÓĞ¼¸ÁĞ(ÕıÕûÊı)
+'//å®šä¹‰ä¸€è¡Œæœ€å¤šæœ‰å‡ åˆ—(æ­£æ•´æ•°)
 iCols = 5
 iColsPercent = FormatPercent(1 / iCols, 0)
-'//Êä³öTABLE±íÍ·
+'//è¾“å‡ºTABLEè¡¨å¤´
 Response.Write("<table width=""100%"" border=""0"" cellspacing=""1"" cellpadding=""2"" bgcolor=""#000000""><tr>")
-'//Ñ­»·¿ªÊ¼ (i < iPageSize)Ìõ¼şÎªACCESS·ÖÒ³Ê±±ØÒª
+'//å¾ªç¯å¼€å§‹ (i < iPageSize)æ¡ä»¶ä¸ºACCESSåˆ†é¡µæ—¶å¿…è¦
 Do While Not oRs.EOF
-   '//Ã¿ĞĞÀıÂúÁË¾Í¼ÓÒ»¸öĞÂĞĞ
+   '//æ¯è¡Œä¾‹æ»¡äº†å°±åŠ ä¸€ä¸ªæ–°è¡Œ
    If i > 0 And i Mod iCols = 0 Then Response.Write("</tr><tr>")
    i = i + 1
    Response.Write("<td width=""" & iColsPercent & """ bgcolor=""#CCE8CF""><font color=""#000000"">" & Server.HTMLEncode(oRs(2)) & "</font></td>")
    oRs.MoveNext
 Loop
-'//Ñ­»·½áÊø ¿ªÊ¼²¹¿ÕÈ±µÄÁĞ
+'//å¾ªç¯ç»“æŸ å¼€å§‹è¡¥ç©ºç¼ºçš„åˆ—
 Do While i < iPageSize
-   '//ÒÔÏÂÁ½¸öÌõ¼ş¶şÑ¡Ò»
+   '//ä»¥ä¸‹ä¸¤ä¸ªæ¡ä»¶äºŒé€‰ä¸€
    If i Mod iCols = 0 Then
-       'Response.Write("</tr><tr>") '//Èç¹ûÒª²¹ÂúÕû¸ö±í¸ñ¾Í¼ÌĞøÊä³ö<tr></tr>
-       Exit Do '//Èç¹ûÖ»²¹Âú×îºóÒ»ĞĞ¾ÍÖ±½Ó½áÊø
+       'Response.Write("</tr><tr>") '//å¦‚æœè¦è¡¥æ»¡æ•´ä¸ªè¡¨æ ¼å°±ç»§ç»­è¾“å‡º<tr></tr>
+       Exit Do '//å¦‚æœåªè¡¥æ»¡æœ€åä¸€è¡Œå°±ç›´æ¥ç»“æŸ
    End If
    i = i + 1
-   Response.Write("<td width="""&FormatPercent(1 / iCols, 0)&""" bgcolor=""#CCCCCC""><font color=""red"">Ö»ÌîÂú×îºóÒ»ĞĞ</font></td>")
+   Response.Write("<td width="""&FormatPercent(1 / iCols, 0)&""" bgcolor=""#CCCCCC""><font color=""red"">åªå¡«æ»¡æœ€åä¸€è¡Œ</font></td>")
 Loop
-'//Êä³ö·ÖÒ³ĞÅÏ¢/ÑùÊ½/TABLEÎ²
-Response.Write("</tr><tr><td colspan=""" & iCols & """ bgcolor=""#CCE8CF"">" & sPageInfo & "<br />" & sPager & "<br /><font color=""blue"">&nbsp; &nbsp; ·­Ò³Á´½Ó×Ô¶¨ÒåÎª: http://down.chinaz.com/soft/24767.htm#Ò³Êı.html</font></td></tr></table>")
+'//è¾“å‡ºåˆ†é¡µä¿¡æ¯/æ ·å¼/TABLEå°¾
+Response.Write("</tr><tr><td colspan=""" & iCols & """ bgcolor=""#CCE8CF"">" & sPagerInfo & "<br />" & sPager & "<br /><font color=""blue"">&nbsp; &nbsp; ç¿»é¡µé“¾æ¥è‡ªå®šä¹‰ä¸º: http://down.chinaz.com/soft/24767.htm#é¡µæ•°.html</font></td></tr></table>")
 oRs.Close
 %>
 <%
 '//-----------------------------------------------------------------------------
-'// ¶Ô¸Ã¼ÇÂ¼¼¯µÄ·ÖÒ³ÑùÊ½¼°Ä£°å½øĞĞÉèÖÃ(²»ÉèÖÃÔòÊ¹ÓÃÄ¬ÈÏÑùÊ½)
+'// å¯¹è¯¥è®°å½•é›†çš„åˆ†é¡µæ ·å¼åŠæ¨¡æ¿è¿›è¡Œè®¾ç½®(ä¸è®¾ç½®åˆ™ä½¿ç”¨é»˜è®¤æ ·å¼)
 '//-----------------------------------------------------------------------------
-'//Ñ¡Ôñ ·ÖÒ³Á´½Ó Êä³öµÄÑùÊ½
-'//Îª0: ¿ÉÒÔÊ¹ÓÃÑùÊ½±í¶Ô·ÖÒ³Á´½Ó½øĞĞÃÀ»¯(http://jorkin.reallydo.com/kin_db_pager/?page=10)
-'//Îª1: ¿ÉÊ¹ÓÃ<font>µÈHTML´úÂë½øĞĞÑÕÉ«ÉèÖÃ
+'//é€‰æ‹© åˆ†é¡µé“¾æ¥ è¾“å‡ºçš„æ ·å¼
+'//ä¸º0: å¯ä»¥ä½¿ç”¨æ ·å¼è¡¨å¯¹åˆ†é¡µé“¾æ¥è¿›è¡Œç¾åŒ–(http://jorkin.reallydo.com/kin_db_pager/?page=10)
+'//ä¸º1: å¯ä½¿ç”¨<font>ç­‰HTMLä»£ç è¿›è¡Œé¢œè‰²è®¾ç½®
 oDbPager.Style = 0
-'//¶¨Òå Ê×Ò³/ÉÏÒ»Ò³/ÏÂÒ»Ò³/Ä©Ò³ Á´½ÓÑùÊ½(Ö§³ÖHTML)
+'//å®šä¹‰ é¦–é¡µ/ä¸Šä¸€é¡µ/ä¸‹ä¸€é¡µ/æœ«é¡µ é“¾æ¥æ ·å¼(æ”¯æŒHTML)
 oDbPager.FirstPage = ""
-oDbPager.PreviewPage = "<span id=""np""></span><font color=""#0000CC""><strong>Previous</strong></font>"
+oDbPager.PreviousPage = "<span id=""np""></span><font color=""#0000CC""><strong>Previous</strong></font>"
 oDbPager.NextPage = "<span id=""nn""></span><font color=""#0000CC""><strong>Next</strong></font>"
 oDbPager.LastPage = ""
-'//¶¨Òå µ±Ç°Ò³/ÁĞ±íÒ³ Á´½ÓÑùÊ½ {$CurrentPage}{$ListPage}½«±»Ìæ»»³É µ±Ç°Ò³/ÁĞ±íÒ³ µÄÊı×Ö
-oDbPager.CurrentPage = "<span id=""nc""></span>{$CurrentPage}"
-oDbPager.ListPage = "<span class=""nr""></span>{$ListPage}"
-'//¶¨Òå·ÖÒ³ÁĞ±íÇ°ºóÒªÏÔÊ¾¼¸¸öÁ´½Ó Èç12...456...78 Ä¬ÈÏÎª0
+'//å®šä¹‰ å½“å‰é¡µ/åˆ—è¡¨é¡µ é“¾æ¥æ ·å¼ {$CurrentPage}{$ListPage}å°†è¢«æ›¿æ¢æˆ å½“å‰é¡µ/åˆ—è¡¨é¡µ çš„æ•°å­—
+oDbPager.CurrentPage = "<span id=""nc""></span>{$Kin_CurrentPage}"
+oDbPager.ListPage = "<span class=""nr""></span>{$Kin_ListPage}"
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨å‰åè¦æ˜¾ç¤ºå‡ ä¸ªé“¾æ¥ å¦‚12...456...78 é»˜è®¤ä¸º0
 oDbPager.PagerTop = 0
-'//¶¨Òå·ÖÒ³ÁĞ±í×î´óÊıÁ¿ Ä¬ÈÏÎª7
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨æœ€å¤§æ•°é‡ é»˜è®¤ä¸º7
 oDbPager.PagerSize = 9
-'//¶¨Òå¼ÇÂ¼¼¯×ÛºÏĞÅÏ¢
-'oDbPager.PageInfo = "¹²ÓĞ {$Kin_RecordCount} ¼ÇÂ¼ Ò³´Î:{$Kin_Page}/{$Kin_PageCount}"
-'//×Ô¶¨ÒåISAPI_REWRITEÂ·¾¶ * ºÅ ½«±»Ìæ»»Îªµ±Ç°Ò³Êı
-oDbPager.RewritePath = "./?page=*"" onclick=""window.open('http://www.google.cn/search?hl=zh-CN&newwindow=1&q=kin_db_pager&start='+eval(2-1)+'0&sa=N&filter=0');"
-'//¶¨ÒåÌø×ªÁĞ±íÎª<INPUT>ÎÄ±¾¿ò Ä¬ÈÏÎª"SELECT"
-oDbPager.JumpPageType = "INPUT"
-'//¶¨ÒåÒ³ÃæÌøµÄSELECT/INPUTµÄÑùÊ½(HTML´úÂë)
-oDbPager.JumpPageAttr = "class=""reallydo"" style=""color:#820222"""
-oDbPager.SpaceMark = "</td><td>"
+'//å®šä¹‰è®°å½•é›†ç»¼åˆä¿¡æ¯
+'oDbPager.PagerInfo = "å…±æœ‰ {$Kin_RecordCount} è®°å½• é¡µæ¬¡:{$Kin_Page}/{$Kin_PageCount}"
+'//è‡ªå®šä¹‰ISAPI_REWRITEè·¯å¾„ * å· å°†è¢«æ›¿æ¢ä¸ºå½“å‰é¡µæ•°
+oDbPager.RewritePath = "./?page=*"" onclick=""window.open('https://www.google.com/search?hl=zh-CN&newwindow=1&q=kin_db_pager&start='+eval(2-1)+'0&sa=N&filter=0');"
+'//å®šä¹‰è·³è½¬åˆ—è¡¨ä¸º<INPUT>æ–‡æœ¬æ¡† é»˜è®¤ä¸º"SELECT"
+'oDbPager.JumpPagerType = "INPUT"
+'//å®šä¹‰é¡µé¢è·³çš„SELECT/INPUTçš„æ ·å¼(HTMLä»£ç )
+'oDbPager.JumpPagerAttr = "class=""reallydo"" style=""color:#820222"""
+'oDbPager.SpaceMark = "</td><td>"
 '//-----------------------------------------------------------------------------
-'// »ñÈ¡ËùĞèÒª±äÁ¿ÒÔ±ã½øĞĞÊä³ö
+'// è·å–æ‰€éœ€è¦å˜é‡ä»¥ä¾¿è¿›è¡Œè¾“å‡º
 '//-----------------------------------------------------------------------------
-'//»ñÈ¡µ±Ç°Ò³Âë
+'//è·å–å½“å‰é¡µç 
 'iCurrPage = oDbPager.Page
-'//»ñÈ¡¼ÇÂ¼¼¯ÊıÁ¿
+'//è·å–è®°å½•é›†æ•°é‡
 'iRecordCount = oDbPager.RecordCount
-'//»ñÈ¡Ò³Ãæ×Ü¼ÆÊıÁ¿
+'//è·å–é¡µé¢æ€»è®¡æ•°é‡
 'iPageCount = oDbPager.PageCount
-'//»ñÈ¡¼ÇÂ¼¼¯ĞÅÏ¢
-sPageInfo = oDbPager.PageInfo
-'//»ñÈ¡·ÖÒ³ĞÅÏ¢
+'//è·å–è®°å½•é›†ä¿¡æ¯
+sPagerInfo = oDbPager.PagerInfo
+'//è·å–åˆ†é¡µä¿¡æ¯
 sPager = oDbPager.Pager
-'//»ñÈ¡Ìø×ªÁĞ±í
-sJumpPage = oDbPager.JumpPage
+'//è·å–è·³è½¬åˆ—è¡¨
+sJumpPager = oDbPager.JumpPager("INPUT", "class=""reallydo"" style=""color:#820222""")
 %>
 <style>
 .google{
@@ -296,102 +296,102 @@ COLOR: #000;
 </div>
 <%
 '//-----------------------------------------------------------------------------
-'// ¶Ô¸Ã¼ÇÂ¼¼¯µÄ·ÖÒ³ÑùÊ½¼°Ä£°å½øĞĞÉèÖÃ(²»ÉèÖÃÔòÊ¹ÓÃÄ¬ÈÏÑùÊ½)
+'// å¯¹è¯¥è®°å½•é›†çš„åˆ†é¡µæ ·å¼åŠæ¨¡æ¿è¿›è¡Œè®¾ç½®(ä¸è®¾ç½®åˆ™ä½¿ç”¨é»˜è®¤æ ·å¼)
 '//-----------------------------------------------------------------------------
-'//Ñ¡Ôñ ·ÖÒ³Á´½Ó Êä³öµÄÑùÊ½
-'//Îª0: ¿ÉÒÔÊ¹ÓÃÑùÊ½±í¶Ô·ÖÒ³Á´½Ó½øĞĞÃÀ»¯(http://jorkin.reallydo.com/kin_db_pager/?page=10)
-'//Îª1: ¿ÉÊ¹ÓÃ<font>µÈHTML´úÂë½øĞĞÑÕÉ«ÉèÖÃ
+'//é€‰æ‹© åˆ†é¡µé“¾æ¥ è¾“å‡ºçš„æ ·å¼
+'//ä¸º0: å¯ä»¥ä½¿ç”¨æ ·å¼è¡¨å¯¹åˆ†é¡µé“¾æ¥è¿›è¡Œç¾åŒ–(http://jorkin.reallydo.com/kin_db_pager/?page=10)
+'//ä¸º1: å¯ä½¿ç”¨<font>ç­‰HTMLä»£ç è¿›è¡Œé¢œè‰²è®¾ç½®
 oDbPager.Style = 0
-'//¶¨Òå Ê×Ò³/ÉÏÒ»Ò³/ÏÂÒ»Ò³/Ä©Ò³ Á´½ÓÑùÊ½(Ö§³ÖHTML)
+'//å®šä¹‰ é¦–é¡µ/ä¸Šä¸€é¡µ/ä¸‹ä¸€é¡µ/æœ«é¡µ é“¾æ¥æ ·å¼(æ”¯æŒHTML)
 oDbPager.FirstPage = "&lt;&lt;"
-oDbPager.PreviewPage = "&lt;"
+oDbPager.PreviousPage = "&lt;"
 oDbPager.NextPage = "&gt;"
 oDbPager.LastPage = "&gt;&gt;"
-'//¶¨Òå µ±Ç°Ò³/ÁĞ±íÒ³ Á´½ÓÑùÊ½ {$CurrentPage}{$ListPage}½«±»Ìæ»»³É µ±Ç°Ò³/ÁĞ±íÒ³ µÄÊı×Ö
-oDbPager.CurrentPage = "{$CurrentPage}"
-oDbPager.ListPage = "{$ListPage}"
-'//¶¨Òå·ÖÒ³ÁĞ±íÇ°ºóÒªÏÔÊ¾¼¸¸öÁ´½Ó Èç12...456...78 Ä¬ÈÏÎª0
+'//å®šä¹‰ å½“å‰é¡µ/åˆ—è¡¨é¡µ é“¾æ¥æ ·å¼ {$CurrentPage}{$ListPage}å°†è¢«æ›¿æ¢æˆ å½“å‰é¡µ/åˆ—è¡¨é¡µ çš„æ•°å­—
+oDbPager.CurrentPage = "{$Kin_CurrentPage}"
+oDbPager.ListPage = "{$Kin_ListPage}"
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨å‰åè¦æ˜¾ç¤ºå‡ ä¸ªé“¾æ¥ å¦‚12...456...78 é»˜è®¤ä¸º0
 oDbPager.PagerTop = 0
-'//¶¨Òå·ÖÒ³ÁĞ±í×î´óÊıÁ¿ Ä¬ÈÏÎª7
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨æœ€å¤§æ•°é‡ é»˜è®¤ä¸º7
 oDbPager.PagerSize = 9
-oDbPager.SpaceMark = " "
-'//¶¨Òå¼ÇÂ¼¼¯×ÛºÏĞÅÏ¢
-'oDbPager.PageInfo = "¹²ÓĞ {$Kin_RecordCount} ¼ÇÂ¼ Ò³´Î:{$Kin_Page}/{$Kin_PageCount}"
-'//×Ô¶¨ÒåISAPI_REWRITEÂ·¾¶ * ºÅ ½«±»Ìæ»»Îªµ±Ç°Ò³Êı
+'oDbPager.SpaceMark = " "
+'//å®šä¹‰è®°å½•é›†ç»¼åˆä¿¡æ¯
+'oDbPager.PagerInfo = "å…±æœ‰ {$Kin_RecordCount} è®°å½• é¡µæ¬¡:{$Kin_Page}/{$Kin_PageCount}"
+'//è‡ªå®šä¹‰ISAPI_REWRITEè·¯å¾„ * å· å°†è¢«æ›¿æ¢ä¸ºå½“å‰é¡µæ•°
 oDbPager.RewritePath = "javascript:ajaxLoad(*);"
-'//¶¨ÒåÌø×ªÁĞ±íÎª<INPUT>ÎÄ±¾¿ò Ä¬ÈÏÎª"SELECT"
-oDbPager.JumpPageType = "INPUT"
-'//¶¨ÒåÒ³ÃæÌøµÄSELECT/INPUTµÄÑùÊ½(HTML´úÂë)
-oDbPager.JumpPageAttr = "class=""reallydo"" style=""color:#820222"""
+'//å®šä¹‰è·³è½¬åˆ—è¡¨ä¸º<INPUT>æ–‡æœ¬æ¡† é»˜è®¤ä¸º"SELECT"
+'oDbPager.JumpPagerType = "INPUT"
+'//å®šä¹‰é¡µé¢è·³çš„SELECT/INPUTçš„æ ·å¼(HTMLä»£ç )
+'oDbPager.JumpPagerAttr = "class=""reallydo"" style=""color:#820222"""
 '//-----------------------------------------------------------------------------
-'// »ñÈ¡ËùĞèÒª±äÁ¿ÒÔ±ã½øĞĞÊä³ö
+'// è·å–æ‰€éœ€è¦å˜é‡ä»¥ä¾¿è¿›è¡Œè¾“å‡º
 '//-----------------------------------------------------------------------------
-'//»ñÈ¡µ±Ç°Ò³Âë
+'//è·å–å½“å‰é¡µç 
 'iCurrPage = oDbPager.Page
-'//»ñÈ¡¼ÇÂ¼¼¯ÊıÁ¿
+'//è·å–è®°å½•é›†æ•°é‡
 'iRecordCount = oDbPager.RecordCount
-'//»ñÈ¡Ò³Ãæ×Ü¼ÆÊıÁ¿
+'//è·å–é¡µé¢æ€»è®¡æ•°é‡
 'iPageCount = oDbPager.PageCount
-'//»ñÈ¡¼ÇÂ¼¼¯ĞÅÏ¢
-sPageInfo = oDbPager.PageInfo
-'//»ñÈ¡·ÖÒ³ĞÅÏ¢
+'//è·å–è®°å½•é›†ä¿¡æ¯
+sPagerInfo = oDbPager.PagerInfo
+'//è·å–åˆ†é¡µä¿¡æ¯
 sPager = oDbPager.Pager
-'//»ñÈ¡Ìø×ªÁĞ±í
-sJumpPage = oDbPager.JumpPage
+'//è·å–è·³è½¬åˆ—è¡¨
+sJumpPager = oDbPager.JumpPager("INPUT", "class=""reallydo"" style=""color:#820222""")
 %>
 <script>
 function ajaxLoad(i){
-	alert('ajax¶ÁÈ¡µÚ '+i+' Ò³.');
+	alert('ajaxè¯»å–ç¬¬ '+i+' é¡µ.');
 //	location.href='?<%=oDbPager.PageParam%>='+i;
 }
 </script>
 <style>
 .ajax { background-color:#ccFFee; margin:5px; padding:5px;}
 </style>
-<div class="ajax"><%="ajax ·ÖÒ³ " & sPageInfo & " " & sPager & " ajaxÊı×Ö·ÖÒ³:" & sJumpPage%></div>
+<div class="ajax"><%="ajax åˆ†é¡µ " & sPagerInfo & " " & sPager & " ajaxæ•°å­—åˆ†é¡µ:" & sJumpPager%></div>
 <%
 '//-----------------------------------------------------------------------------
-'// ¶Ô¸Ã¼ÇÂ¼¼¯µÄ·ÖÒ³ÑùÊ½¼°Ä£°å½øĞĞÉèÖÃ(²»ÉèÖÃÔòÊ¹ÓÃÄ¬ÈÏÑùÊ½)
+'// å¯¹è¯¥è®°å½•é›†çš„åˆ†é¡µæ ·å¼åŠæ¨¡æ¿è¿›è¡Œè®¾ç½®(ä¸è®¾ç½®åˆ™ä½¿ç”¨é»˜è®¤æ ·å¼)
 '//-----------------------------------------------------------------------------
-'//Ñ¡Ôñ ·ÖÒ³Á´½Ó Êä³öµÄÑùÊ½
-'//Îª0: ¿ÉÒÔÊ¹ÓÃÑùÊ½±í¶Ô·ÖÒ³Á´½Ó½øĞĞÃÀ»¯(http://jorkin.reallydo.com/kin_db_pager/?page=10)
-'//Îª1: ¿ÉÊ¹ÓÃ<font>µÈHTML´úÂë½øĞĞÑÕÉ«ÉèÖÃ
+'//é€‰æ‹© åˆ†é¡µé“¾æ¥ è¾“å‡ºçš„æ ·å¼
+'//ä¸º0: å¯ä»¥ä½¿ç”¨æ ·å¼è¡¨å¯¹åˆ†é¡µé“¾æ¥è¿›è¡Œç¾åŒ–(http://jorkin.reallydo.com/kin_db_pager/?page=10)
+'//ä¸º1: å¯ä½¿ç”¨<font>ç­‰HTMLä»£ç è¿›è¡Œé¢œè‰²è®¾ç½®
 oDbPager.Style = 0
-'//¶¨Òå Ê×Ò³/ÉÏÒ»Ò³/ÏÂÒ»Ò³/Ä©Ò³ Á´½ÓÑùÊ½(Ö§³ÖHTML)
+'//å®šä¹‰ é¦–é¡µ/ä¸Šä¸€é¡µ/ä¸‹ä¸€é¡µ/æœ«é¡µ é“¾æ¥æ ·å¼(æ”¯æŒHTML)
 oDbPager.FirstPage = "&lt;&lt;"
-oDbPager.PreviewPage = "&lt;"
+oDbPager.PreviousPage = "&lt;"
 oDbPager.NextPage = "&gt;"
 oDbPager.LastPage = "&gt;&gt;"
-'//¶¨Òå µ±Ç°Ò³/ÁĞ±íÒ³ Á´½ÓÑùÊ½ {$CurrentPage}{$ListPage}½«±»Ìæ»»³É µ±Ç°Ò³/ÁĞ±íÒ³ µÄÊı×Ö
-oDbPager.CurrentPage = "{$CurrentPage}"
-oDbPager.ListPage = "{$ListPage}"
-'//¶¨Òå·ÖÒ³ÁĞ±íÇ°ºóÒªÏÔÊ¾¼¸¸öÁ´½Ó Èç12...456...78 Ä¬ÈÏÎª0
+'//å®šä¹‰ å½“å‰é¡µ/åˆ—è¡¨é¡µ é“¾æ¥æ ·å¼ {$CurrentPage}{$ListPage}å°†è¢«æ›¿æ¢æˆ å½“å‰é¡µ/åˆ—è¡¨é¡µ çš„æ•°å­—
+oDbPager.CurrentPage = "{$Kin_CurrentPage}"
+oDbPager.ListPage = "{$Kin_ListPage}"
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨å‰åè¦æ˜¾ç¤ºå‡ ä¸ªé“¾æ¥ å¦‚12...456...78 é»˜è®¤ä¸º0
 oDbPager.PagerTop = 2
-'//¶¨Òå·ÖÒ³ÁĞ±í×î´óÊıÁ¿ Ä¬ÈÏÎª7
+'//å®šä¹‰åˆ†é¡µåˆ—è¡¨æœ€å¤§æ•°é‡ é»˜è®¤ä¸º7
 oDbPager.PagerSize = 9
-'//¶¨Òå¼ÇÂ¼¼¯×ÛºÏĞÅÏ¢
-'oDbPager.PageInfo = "¹²ÓĞ {$Kin_RecordCount} ¼ÇÂ¼ Ò³´Î:{$Kin_Page}/{$Kin_PageCount}"
-'//×Ô¶¨ÒåISAPI_REWRITEÂ·¾¶ * ºÅ ½«±»Ìæ»»Îªµ±Ç°Ò³Êı
+'//å®šä¹‰è®°å½•é›†ç»¼åˆä¿¡æ¯
+'oDbPager.PagerInfo = "å…±æœ‰ {$Kin_RecordCount} è®°å½• é¡µæ¬¡:{$Kin_Page}/{$Kin_PageCount}"
+'//è‡ªå®šä¹‰ISAPI_REWRITEè·¯å¾„ * å· å°†è¢«æ›¿æ¢ä¸ºå½“å‰é¡µæ•°
 oDbPager.RewritePath = ""
-'//¶¨ÒåÌø×ªÁĞ±íÎª<INPUT>ÎÄ±¾¿ò Ä¬ÈÏÎª"SELECT"
-oDbPager.JumpPageType = "INPUT"
-'//¶¨ÒåÒ³ÃæÌøµÄSELECT/INPUTµÄÑùÊ½(HTML´úÂë)
-oDbPager.JumpPageAttr = "class=""reallydo"" style=""color:#820222"""
+'//å®šä¹‰è·³è½¬åˆ—è¡¨ä¸º<INPUT>æ–‡æœ¬æ¡† é»˜è®¤ä¸º"SELECT"
+'oDbPager.JumpPagerType = "INPUT"
+'//å®šä¹‰é¡µé¢è·³çš„SELECT/INPUTçš„æ ·å¼(HTMLä»£ç )
+'oDbPager.JumpPagerAttr = "class=""reallydo"" style=""color:#820222"""
 '//-----------------------------------------------------------------------------
-'// »ñÈ¡ËùĞèÒª±äÁ¿ÒÔ±ã½øĞĞÊä³ö
+'// è·å–æ‰€éœ€è¦å˜é‡ä»¥ä¾¿è¿›è¡Œè¾“å‡º
 '//-----------------------------------------------------------------------------
-'//»ñÈ¡µ±Ç°Ò³Âë
+'//è·å–å½“å‰é¡µç 
 'iCurrPage = oDbPager.Page
-'//»ñÈ¡¼ÇÂ¼¼¯ÊıÁ¿
+'//è·å–è®°å½•é›†æ•°é‡
 'iRecordCount = oDbPager.RecordCount
-'//»ñÈ¡Ò³Ãæ×Ü¼ÆÊıÁ¿
+'//è·å–é¡µé¢æ€»è®¡æ•°é‡
 'iPageCount = oDbPager.PageCount
-'//»ñÈ¡¼ÇÂ¼¼¯ĞÅÏ¢
-sPageInfo = oDbPager.PageInfo
-'//»ñÈ¡·ÖÒ³ĞÅÏ¢
+'//è·å–è®°å½•é›†ä¿¡æ¯
+sPagerInfo = oDbPager.PagerInfo
+'//è·å–åˆ†é¡µä¿¡æ¯
 sPager = oDbPager.Pager
-'//»ñÈ¡Ìø×ªÁĞ±í
-sJumpPage = oDbPager.JumpPage
+'//è·å–è·³è½¬åˆ—è¡¨
+sJumpPager = oDbPager.JumpPager("", "")
 %>
 <style>
 div.kindbpager0 {
@@ -425,8 +425,8 @@ div.kindbpager0 a:hover, div.kindbpager0 a:actived {
  background-color:#66FFFF;
 }
 </style>
-<div class="kindbpager0"> <%= sPageInfo %> <%= sPager %> ÊäÈëÊı×ÖÌø×ª: <%= sJumpPage %> Ò³</div>
-<p style="background-color:red;padding:10px;">´ÓÕâÀïÍùÏÂoDbPager.PagerTop = 2</p>
+<div class="kindbpager0"> <%= sPagerInfo %> <%= sPager %> <%= sJumpPager %></div>
+<p style="background-color:red;padding:10px;">ä»è¿™é‡Œå¾€ä¸‹oDbPager.PagerTop = 2</p>
 <p><a href="http://www.digg.com">Digg</a>Style</p>
 <div class="digg"><%= sPager %></div>
 <p><a href="http://www.yahoo.com">Yahoo</a>Style</p>
@@ -455,7 +455,7 @@ div.kindbpager0 a:hover, div.kindbpager0 a:actived {
 oDbPager.PagerTop = 0
 sPager = oDbPager.Pager
 %>
-<p style="background-color:red;padding:10px;">´ÓÕâÀïÍùÏÂoDbPager.PagerTop = 0</p>
+<p style="background-color:red;padding:10px;">ä»è¿™é‡Œå¾€ä¸‹oDbPager.PagerTop = 0</p>
 <p>Gray Style 2</p>
 <div class="grayr"><%= sPager %></div>
 <p>Yellow Style</p>

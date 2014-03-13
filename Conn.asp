@@ -1,4 +1,4 @@
-<%
+﻿<%
 Dim oConn
 Public Function OpenConn()
 	On Error Resume Next
