@@ -16,7 +16,7 @@
 ' *   优化ReWrite()函数，大大提高了效率。
 ' *   加入新函数GetCondition()，用来做多条件搜索，不过需要Jorkin_Function.asp库。
 ' *   方法为：GetCondition("表单字段名", "表单比较运算符", "表单关键字")。
-' *   比较运算符可选(<, =, >, <=, >=, <>, !=, !<, !>)，关键字可用?表示单字符，用*表示零个或更多字符。
+' *   比较运算符可选(<, =, >, <=, >=, <>, !=, !<, !>, like, not like)，关键字可用?表示单字符，用*表示零个或更多字符。
 ' *   警告！！！前台页面慎用，会显露数据库字段名称，可参考GetCondition()自行修改。
 ' * 2009-02-11
 ' *   小修小改，加强了几个判断，更新一些说明，想用存储过程的请下载叶子分页类的sp_Util_Page.sql，本类完全兼容。
@@ -85,10 +85,10 @@ Class Kin_Db_Pager
     Private sNextPage '//下一页链接 样式
     Private sLastPage '//末页链接 样式
     Private iPagerTop '//分页列表头尾数量
+    Private iPagerGroup '//多少页做为一组
     Private sJumpPage '//分页跳转功能
     Private sJumpPageType '//分页跳转类型(可选SELECT或INPUT)
     Private sJumpPageAttr '//分页跳转其他HTML属性
-    Private ii, iStart, iEnd
     Private sUrl, sQueryString, x, y
     Private sSpaceMark '//链接之前间隔符
 
@@ -100,7 +100,7 @@ Class Kin_Db_Pager
 
     Private Sub Class_Initialize()
         ReDim aCondition( -1)
-        sProjectName = "Jorkin 数据库分页类 Kin_Db_Pager"
+        sProjectName = "Jorkin &#25968;&#25454;&#24211;&#20998;&#39029;&#31867;  Kin_Db_Pager"
         sDbType = "MSSQL"
         sVersion = "Ver: 1.09 Build: 090322"
         sPKey = "ID"
@@ -120,6 +120,7 @@ Class Kin_Db_Pager
         sRecordCount = "{$Kin_RecordCount}"
         sPageInfo = "&#20849;&#26377;  {$Kin_RecordCount} &#26465;&#35760;&#24405;  &#39029;&#27425; : {$Kin_Page}/{$Kin_PageCount}"
         sPageParam = "page"
+        setPageParam(sPageParam)
         iStyle = 29252888
         iTableKind = 0
         iPagerSize = 7
@@ -132,7 +133,6 @@ Class Kin_Db_Pager
         sJumpPage = ""
         sJumpPageType = "SELECT"
         sSpaceMark = " "
-        setPageParam(sPageParam)
     End Sub
 
     '//类结束事件
@@ -173,18 +173,18 @@ Class Kin_Db_Pager
     Private Function IsBlank(byref TempVar)
         IsBlank = False
         Select Case VarType(TempVar)
-            Case 0, 1 '--- Empty & Null
+            Case 0, 1
                 IsBlank = True
-            Case 8 '--- String
+            Case 8
                 If Len(TempVar) = 0 Then
                     IsBlank = True
                 End If
-            Case 9 '--- Object
+            Case 9
                 tmpType = TypeName(TempVar)
                 If (tmpType = "Nothing") Or (tmpType = "Empty") Then
                     IsBlank = True
                 End If
-            Case 8192, 8204, 8209 '--- Array
+            Case 8192, 8204, 8209
                 If UBound(TempVar) = -1 Then
                     IsBlank = True
                 End If
@@ -195,13 +195,13 @@ Class Kin_Db_Pager
 
     Public Function Connect(o)
         If TypeName(o) <> "Connection" Then
-            If bShowError Then doError "无效的数据库连接"
+            doError "无效的数据库连接。"
         Else
             If o.State = 1 Then
                 Set oConn = o
                 sDbType = GetDbType(oConn)
             Else
-                If bShowError Then doError "数据库连接已关闭"
+                doError "数据库连接已关闭。"
             End If
         End If
     End Function
@@ -210,6 +210,7 @@ Class Kin_Db_Pager
 
     Public Sub doError(s)
         On Error Resume Next
+		If Not bShowError Then Exit Sub
         Dim nRnd
         Randomize()
         nRnd = CLng(Rnd() * 29252888)
@@ -219,14 +220,14 @@ Class Kin_Db_Pager
             .Write "<br />"
             .Write "<div style=""width:100%; font-size:12px; cursor:pointer;line-height:150%"">"
             .Write "<label onClick=""ERRORDIV" & nRnd & ".style.display=(ERRORDIV" & nRnd & ".style.display=='none'?'':'none')"">"
-            .Write "<span style=""background-color:820222;color:#FFFFFF;height:23px;font-size:14px;"">〖 Kin_Db_Pager 提示信息 ERROR 〗</span><br />"
+            .Write "<span style=""background-color:820222;color:#FFFFFF;height:23px;font-size:14px;"">〖 Kin_Db_Pager &#25552;&#31034;&#20449;&#24687;  ERROR 〗</span><br />"
             .Write "</label>"
             .Write "<div id=""ERRORDIV" & nRnd & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
-            .Write "<span style=""color:#FF0000;"">Description</span> " & s & "<br />"
+            .Write "<span style=""color:#FF0000;"">Description</span> " & Server.HTMLEncode(s) & "<br />"
             .Write "<span style=""color:#FF0000;"">Provider</span> " & sProjectName & "<br />"
             .Write "<span style=""color:#FF0000;"">Version</span> " & sVersion & "<br />"
             .Write "<span style=""color:#FF0000;"">Information</span> Coding By <a href=""http://jorkin.reallydo.com"">Jorkin</a>.<br />"
-            .Write "<img width=""0"" height=""0"" src=""http://jorkin.reallydo.com/"" style=""display:none""></div>"
+            .Write "<img width=""0"" height=""0"" src=""http://img.users.51.la/2782986.asp"" style=""display:none"" /></div>"
             .Write "</div>"
             .Write "<br />"
             .End()
@@ -247,12 +248,12 @@ Class Kin_Db_Pager
         Select Case sDbType
             Case "MSSQL"
                 getSql = " SELECT " & IIf(bDistinct, "DISTINCT", "") & " " & sFields & " FROM " & TableFormat(sTableName) & " " _
-                         & " WHERE ["&sPKey&"] IN ( " _
-                         & "   SELECT TOP "&iEnd&" ["&sPKey&"] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
+                         & " WHERE [" & sPKey & "] IN ( " _
+                         & "   SELECT TOP " & iEnd & " [" & sPKey & "] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
                          & " )"
                 If iPage>1 Then
-                    getSql = getSql & " AND ["&sPKey&"] NOT IN ( " _
-                             & "   SELECT TOP "&iStart&" ["&sPKey&"] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
+                    getSql = getSql & " AND [" & sPKey & "] NOT IN ( " _
+                             & "   SELECT TOP " & iStart & " [" & sPKey & "] FROM " & TableFormat(sTableName) & " " & sCondition & " " & sOrderBy & " " _
                              & " )"
                 End If
                 getSql = getSql & " " & sOrderBy
@@ -288,7 +289,7 @@ Class Kin_Db_Pager
         End If
         Set oRs = oConn.Execute( sSql )
         If Err Then
-            If bShowError Then doError Err.Description
+            doError Err.Description
         End If
         iRecordCount = oRs.Fields.Item(0).Value
         Set oRs = Nothing
@@ -388,7 +389,7 @@ Class Kin_Db_Pager
         Next
         sUrl = Request.ServerVariables("URL") & "?" & IIf(IsBlank(sQueryString), "", Mid(sQueryString, 2) & "&") & sPageParam & "="
     End Function
-    
+
     '//函数、方法 结束
     '//-------------------------------------------------------------------------
 
@@ -397,7 +398,7 @@ Class Kin_Db_Pager
 
     '//定义连接对象
 
-    Public Property Let ActiveConnection(o)
+    Public Property Set ActiveConnection(o)
         Set oConn = o
         sDbType = GetDbType(oConn)
     End Property
@@ -690,7 +691,7 @@ Class Kin_Db_Pager
     Public Property Get CurrentPageSize()
         If IsNull(iRecordCount) Then CaculateRecordCount()
         If IsNull(iPageCount) Then CaculatePageCount()
-        CurrentPageSize = IIf(iPage = iPageCount, iRecordCount - (iPage -1) * iPageSize, iPageSize)
+        CurrentPageSize = IIf(iRecordCount>0, IIf(iPage = iPageCount, iRecordCount - (iPage -1) * iPageSize, iPageSize), 0)
     End Property
 
     '//得到分页后的记录集
@@ -727,19 +728,17 @@ Class Kin_Db_Pager
                 RecordSet.Open sSql, oConn, 1, 1, &H0001
                 RecordSet.PageSize = iPageSize
                 If RecordSet.AbsolutePage <> -1 Then
-                    iPage = IIf(iPage>RecordSet.PageCount, RecordSet.PageCount, iPage)
+                    iPage = IIf(iPage > RecordSet.PageCount, RecordSet.PageCount, iPage)
                     RecordSet.AbsolutePage = iPage
                 End If
         End Select
         If Err Then
-            If bShowError Then doError Err.Description
+            doError Err.Description
             If Not IsBlank(sSql) Then
                 Set RecordSet = oConn.Execute( sSql )
-                If Err Then
-                    If bShowError Then doError Err.Description
-                End If
+                If Err Then doError Err.Description
             Else
-                If bShowError Then doError Err.Description
+                doError Err.Description
             End If
         End If
         Err.Clear()
@@ -775,7 +774,7 @@ Class Kin_Db_Pager
     '//输出翻页按钮
 
     Public Property Get Pager()
-
+        Dim ii, iStart, iEnd
         Pager = ""
         ii = (iPagerSize \ 2)
         iEnd = iPage + ii
@@ -979,7 +978,7 @@ End Class
 <%
 Sub Eg()
     With Response
-        .Write("<div style=""text-align:left"">")
+        .Write("<p style=""text-align:left;padding:22px;border:1px solid #820222;font-size:12px"" id=""eg"">")
         .Write("'//-----------------------------------------------------------------------------<br />")
         .Write("'// 定义Eg()样例相关变量 如果未使用Option Explicit可省略<br />")
         .Write("'//-----------------------------------------------------------------------------<br />")
@@ -1000,20 +999,20 @@ Sub Eg()
         .Write("oDbPager.Connect(oConn) '//方法一(推荐)<br />")
         .Write("'Set oDbPager.ActiveConnection = oConn '//方法二<br />")
         .Write("'oDbPager.ConnectionString = oConn.ConnectionString '//方法三<br />")
-        .Write("'//指定表示页数的URL变量 默认值:""page""<br />")
-        .Write("'oDbPager.PageParam = ""page""<br />")
         .Write("'//指定数据库类型.默认值:""MSSQL""<br />")
         .Write("'oDbPager.DbType = ""ACCESS""<br />")
-        .Write("'//指定目标表 可用临时表""(Select * From [Table])""<br />")
+        .Write("'//指定目标表 可用临时表""(Select * From [Table]) t""<br />")
         .Write("oDbPager.TableName = ""Kin_Article""<br />")
-        .Write("'//选择列 用逗号分隔 默认值:""*""<br />")
+        .Write("'//选择列 用逗号分隔 默认为*<br />")
         .Write("oDbPager.Fields = ""*""<br />")
         .Write("'//指定该表的主键<br />")
         .Write("oDbPager.PKey = ""Article_ID""<br />")
         .Write("'//指定每页记录集数量<br />")
         .Write("oDbPager.PageSize = iPageSize<br />")
+        .Write("'//指定表示页数的URL变量 默认值:""page""<br />")
+        .Write("'oDbPager.PageParam = ""page""<br />")
         .Write("'//指定当前页数<br />")
-        .Write("oDbPager.Page = Request.QueryString(""page"")<br />")
+        .Write("oDbPager.Page = Request.QueryString(""page"") '//也可以直接用Request.QueryString(oDbPager.PageParam)<br />")
         .Write("'//指定排序条件<br />")
         .Write("oDbPager.OrderBy = ""Article_ID DESC""<br />")
         .Write("'//添加条件 可多次使用.如果用Or条件需要(条件1 Or 条件2 Or ...)<br />")
@@ -1022,8 +1021,6 @@ Sub Eg()
         .Write("&nbsp; &nbsp; oDbPager.AddCondition ""(Article_ID &lt; 104 Or Article_ID &gt; 222)""<br />")
         .Write("End If<br />")
         .Write("'GetCondition """","""",""""<br />")
-        .Write("'//也可以直接使用自定义的SQL语句选取记录集(!!!不能分页)<br />")
-        .Write("'oDbPager.Sql = ""Select * From Kin_Article Where Article_ID &lt; 222 Order By Article_ID Desc""<br />")
         .Write("'//输出SQL语句 方便调试<br />")
         .Write("'Response.Write(oDbPager.GetSql()) : Response.Flush()<br />")
         .Write("Set oRs = oDbPager.Recordset<br />")
@@ -1110,7 +1107,7 @@ Sub Eg()
         .Write("Response.Write(""&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="""""" & iCols & """""" bgcolor=""""#CCE8CF""""&gt;&lt;div class=""""kindbpager""""&gt;"" & sPager & "" 跳至: "" & sJumpPage & "" 页&lt;/div&gt;"" & sPageInfo & ""&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"")<br />")
         .Write("oRs.Close<br />")
         .Write("Set oDbPager = Nothing<br />")
-        .Write("</div>")
+        .Write("</p>")
         .Flush()
     End With
 End Sub
@@ -1137,12 +1134,12 @@ Sub GetCondition(valChoose, valOperator, valKeyWord)
                         If InStr(aChoose(x), "[int]")>0 Then
                             oDbPager.AddCondition " " & Str4Sql(Replace(aChoose(x), "[int]", "")) & " like '%" & Bint(aKeyWord(x)) & "%'"
                         Else
-                            If InStr(aKeyWord(x), "*")>0 Or InStr(aKeyWord(x), "?")>0 Or InStr(aKeyWord(x), "？")>0 Then
-                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " like '" & Replace(Replace(Replace(Str4Like(BStr(aKeyWord(x))), "*", "%"), "?", "_"), "？", "_") & "'"
-                            ElseIf LCase(aKeyWord(x)) = "null" Then
+                            If LCase(aKeyWord(x)) = "null" Then
                                 oDbPager.AddCondition "(" & Str4Sql(aChoose(x)) & " is null Or " & Str4Sql(aChoose(x)) & " = '')"
+                            ElseIf InStr(LCase(aChoose(x)), "not")>0 Then
+                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " not like '%" & Str4Like(BStr(aKeyWord(x))) & "%'"
                             Else
-                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " like '%" & Str4Like(BStr(aKeyWord(x))) & "%'"
+                                oDbPager.AddCondition Str4Sql(aChoose(x)) & " like '" & Replace(Replace(Replace(Str4Like(BStr(aKeyWord(x))), "*", "%"), "?", "_"), "？", "_") & "'"
                             End If
                         End If
                 End Select

@@ -34,7 +34,7 @@ oDbPager.Connect(oConn) '//方法一(推荐)
 'Set oDbPager.ActiveConnection = oConn '//方法二
 'oDbPager.ConnectionString = oConn.ConnectionString '//方法三
 '//指定表示页数的URL变量 默认值:"page"
-'oDbPager.PageParam = "page"
+oDbPager.PageParam = "page"
 '//指定数据库类型.默认值:"MSSQL"
 oDbPager.DbType = "ACCESS"
 '//指定目标表 可用临时表"(Select * From [Table])"
@@ -51,7 +51,7 @@ oDbPager.AddCondition "(Article_ID < 104 Or Article_ID > 222)"
 '//指定每页记录集数量
 oDbPager.PageSize = iPageSize
 '//指定当前页数
-oDbPager.Page = Request.QueryString("page")
+oDbPager.Page = Request.QueryString(oDbPager.PageParam)
 '//也可以直接使用自定义的SQL语句选取记录集
 'oDbPager.Sql = "Select * From Kin_Article Where Article_ID < 222 Order By Article_ID Desc"
 '//输出SQL语句 方便调试
@@ -136,11 +136,11 @@ Response.Write("</tr><tr><td colspan=""" & iCols & """ bgcolor=""#CCE8CF""><div 
 %>
 多行多列 方法二(只填满最后一行)<br />
 <%
+Set oRs = oDbPager.Recordset
 oDbPager.RewritePath = "http://down.chinaz.com/soft/24767.htm#*.html"" target=""_blank"
 sPager = oDbPager.Pager
 oDbPager.JumpPageType = "INPUT"
 sJumpPage = oDbPager.JumpPage
-oRs.AbsolutePage = oDbPager.Page()
 '//-----------------------------------------------------------------------------
 '// 例子: 动态输出M行N列, 多行多列, 循环行列, 循环TABLE
 '//-----------------------------------------------------------------------------
@@ -483,9 +483,9 @@ sPager = oDbPager.Pager
 <p>viciao Style</p>
 <div class="viciao"><%= sPager %></div>
 <div style="display:none">
-  <script language="javascript" type="text/javascript" src="http://js.users.51.la/1269467.js"></script>
+  <script language="javascript" type="text/javascript" src="http://js.users.51.la/2782986.js"></script>
   <noscript>
-  <a href="http://www.51.la/?1269467" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/1269467.asp" style="border:none" /></a>
+  <a href="http://www.51.la/?2782986" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/2782986.asp" style="border:none" /></a>
   </noscript>
 </div>
 </body>

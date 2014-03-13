@@ -924,43 +924,53 @@ Function Trace(ByVal s)
     Dim iUBound1, iUBound2
     Dim i, j
     If TypeName(s) = "Recordset" Then
-        Set s = s.Clone
-        If Not s.BOF Then s.MoveFirst
-        WriteLn("<legend style=""color:red;"">Recordset :</legend><table><tr>")
-        WriteLn("<td>&nbsp;</td>")
-        For i = 0 To s.Fields.Count - 1
-            WriteLn("<td>" & s(i).Name & "</td>")
-        Next
-        WriteLn("</tr>")
-        Do While Not s.EOF
-            j = j + 1
-            If j > 50 Then Exit Do
-            WriteLn("<tr><td>" & j & "</td>")
-            For i = 0 To s.Fields.Count - 1
-                If IsNull(s(i)) Then
-                    WriteLn("<td><font color=""red"">&lt;NULL&gt;</font></td>")
-                Else
-                    WriteLn("<td>" & HTMLEncode2(s(i)) & "</td>")
-                End If
-            Next
-            WriteLn("</tr>")
-            s.MoveNext
-        Loop
-        WriteLn("</table>")
+			WriteLn("<legend style=""color:red;"">Recordset :</legend>")
+			If oRs.State = 1 Then
+				Set s = s.Clone
+				If Not s.BOF Then s.MoveFirst
+				WriteLn("<table><tr><td><nobr>序号<nobr></td>")
+				For i = 0 To s.Fields.Count - 1
+					WriteLn("<td>" & s(i).Name & "</td>")
+				Next
+				Do While Not s.EOF
+					j = j + 1
+					If j > 50 Then Exit Do
+					WriteLn("<tr><td>" & j & "</td>")
+					For i = 0 To s.Fields.Count - 1
+						If IsNull(s(i)) Then
+							WriteLn("<td><font color=""red"">&lt;NULL&gt;</font></td>")
+						Else
+							WriteLn("<td>" & HTMLEncode2(s(i)) & "</td>")
+						End If
+					Next
+					WriteLn("</tr>")
+					s.MoveNext
+				Loop
+			Else
+				WriteLn("<tr><td><font color=""red"">指示对象已关闭。</font></td></tr>")
+			End If
+			WriteLn("</table>")
+
     ElseIf IsArray(s) Then
         iUBound1 = UBound(s)
         iUBound2 = UBound(s, 2)
         If Err Then
             WriteLn("<legend style=""color:red;"">Array1 :</legend><table>")
-            WriteLn("<tr>&nbsp;<td></td><td>值:</td></tr>")
+            WriteLn("<tr><td>&#21015;</td><td>&#20540;</td></tr>")
             For i = 0 To iUBound1
                 WriteLn("<tr><td>" & i & "</td>")
-                WriteLn("<td>" & HTMLEncode2(s(i)) & "</td></tr>")
+				If IsArray(s(i)) Then
+					WriteLn("<td>")
+					Trace(s(i))
+					WriteLn("</td>")
+				Else
+	                WriteLn("<td>" & HTMLEncode2(s(i)) & "</td></tr>")
+				End If
             Next
             WriteLn("</table>")
         Else
             WriteLn("<legend style=""color:red;"">Array2 :</legend><table>")
-            WriteLn("<tr><td></td>")
+            WriteLn("<tr><td>&#20108;&#32500;/&#19968;&#32500;</td>")
             For j = 0 To iUBound1
                 WriteLn("<td>" & j & "</td>")
             Next
@@ -968,28 +978,37 @@ Function Trace(ByVal s)
             For i = 0 To iUBound2
                 WriteLn("<tr><td>" & i & "</td>")
                 For j = 0 To iUBound1
-                    WriteLn("<td>" & HTMLEncode2(s(j, i)) & "</td>")
+					If IsArray(s(j, i)) Then
+					WriteLn("<td>")
+					Trace(s(j, i))
+					WriteLn("</td>")
+					Else
+	                    WriteLn("<td>" & HTMLEncode2(s(j, i)) & "</td>")
+					End If
                 Next
                 WriteLn("</tr>")
             Next
             WriteLn("</table>")
         End If
+    ElseIf IsObject(s) Then
+		WriteLn("<legend style=""color:red;"">" & TypeName(s) & " " & s.Version & " :</legend>")
+		WriteLn(HTMLEncode2(s))
     Else
         If TypeName(s) = "String" Then s = BStr(s)
         Select Case UCase(s)
             Case "APPLICATION"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Application.Contents.Count & " 个Application变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Application.Contents.Count & " &#20010;Application&#21464;&#37327;</legend>")
                 For Each i in Application.Contents
                     WriteLn("<strong>Application(""" & i & """)" & " = </strong>")
                     Trace(Application(i))
                 Next
             Case "COOKIES", "REQUEST.COOKIES"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Request.Cookies.Count & " 个Request.Cookies变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Request.Cookies.Count & " &#20010;Request.Cookies&#21464;&#37327;</legend>")
                 For Each i in Request.Cookies
                     WriteLn("<strong>Request.Cookies(""" & i & """)" & " = </strong>")
                     If Request.Cookies(i).HasKeys Then
                         WriteLn("<fieldset><legend style=""color:red;"">" & TypeName(Request.Cookies(i)) & " :</legend>")
-                        WriteLn("<strong>共 " & Request.Cookies(i).Count & " 个Request.Cookies(""" & i & """)子变量</strong><br />")
+                        WriteLn("<strong>&#20849; " & Request.Cookies(i).Count & " &#20010;Request.Cookies(""" & i & """)子&#21464;&#37327;</strong><br />")
                         For Each j in Request.Cookies(i)
                             WriteLn("Request.Cookies(""" & i & """)(""" & j & """) = ")
                             Trace(Request.Cookies(i)(j))
@@ -1001,13 +1020,13 @@ Function Trace(ByVal s)
                     End If
                 Next
             Case "SESSION"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Session.Contents.Count & " 个Session变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Session.Contents.Count & " &#20010;Session&#21464;&#37327;</legend>")
                 For Each i in Session.Contents
                     WriteLn("<strong>Session(""" & i & """)" & " = </strong>")
                     Trace(Session(i))
                 Next
             Case "QUERYSTRING", "REQUEST.QUERYSTRING"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Request.QueryString.Count & " 个Request.QueryString变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Request.QueryString.Count & " &#20010;Request.QueryString&#21464;&#37327;</legend>")
                 For Each i in Request.QueryString
                     WriteLn("<strong>Request.QueryString(""" & i & """)" & " = </strong>")
                     For Each j In Request.QueryString(i)
@@ -1015,7 +1034,7 @@ Function Trace(ByVal s)
                     Next
                 Next
             Case "FORM", "REQUEST.FORM"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Request.Form.Count & " 个Request.Form变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Request.Form.Count & " &#20010;Request.Form&#21464;&#37327;</legend>")
                 For Each i in Request.Form
                     WriteLn("<strong>Request.Form(""" & i & """)" & " = </strong>")
                     For Each j In Request.Form(i)
@@ -1023,25 +1042,21 @@ Function Trace(ByVal s)
                     Next
                 Next
             Case "SERVERVARIABLES", "REQUEST.SERVERVARIABLES"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;"">共 " & Request.ServerVariables.Count & " 个Request.ServerVariables变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;"">&#20849; " & Request.ServerVariables.Count & " &#20010;Request.ServerVariables&#21464;&#37327;</legend>")
                 For Each i in Request.ServerVariables
                     WriteLn("<strong>Request.ServerVariables(""" & i & """)" & " = </strong>")
                     Trace(Request.ServerVariables(i))
                 Next
             Case "REQUEST"
-                WriteLn("<legend class=""tracediv"" style=""font:bold;color:#820222;"">全部Request变量</legend>")
+                WriteLn("<legend class=""tracediv"" style=""font:bold;color:#820222;"">全部Request&#21464;&#37327;</legend>")
                 Trace("COOKIES")
                 Trace("QUERYSTRING")
                 Trace("FORM")
                 Trace("SERVERVARIABLES")
             Case Else
-                WriteLn("<legend style=""color:red;"">" & IIf(IsObject(s), "Object! ", "") & TypeName(s) & " :</legend>")
+                WriteLn("<legend style=""color:red;"">" & TypeName(s) & " :</legend>")
                 If s = "" Then
                     WriteLn("<font color=""blue"">IsBlank</font>")
-                ElseIf IsNull(s) Then
-                    WriteLn("<font color=""red"">IsNull</font>")
-                ElseIf IsEmpty(s) Then
-                    WriteLn("<font color=""red"">IsEmpty</font>")
                 Else
                     WriteLn(HTMLEncode2(s))
                 End If
@@ -1128,7 +1143,7 @@ Function getIMG(sString)
     iReallyDo = -1
     ReDim aReallyDo(iReallyDo)
     If IsNull(sString) Then
-        getIMG = ""
+        getIMG = aReallyDo
         Exit Function
     End If
     '//格式化HTML代码
@@ -1144,7 +1159,6 @@ Function getIMG(sString)
     sReallyDo = ReplaceAll(sReallyDo, "> ", ">", True)
     sReallyDo = Replace(sReallyDo, "><", ">" & vbCrLf & "<")
     sReallyDo = Trim(sReallyDo)
-    On Error GoTo 0
     Set regEx = New RegExp
     regEx.IgnoreCase = True
     regEx.Global = True
@@ -1359,8 +1373,13 @@ Function BTags(s)
 End Function
 %>
 <%
-Sub REnd()
+Sub RE()
     Response.End()
+End Sub
+%>
+<%
+Sub RR(s)
+    Response.Redirect(s)
 End Sub
 %>
 <%
@@ -1377,14 +1396,10 @@ Function IsValid(s, av)
             End If
         Next
     Else
-        If StrComp(BStr(s), BStr(av), 1) = 0 Then
-            IsValid = True
-            Exit Function
-        End If
+        IsValid = IsValid(s, Split(av, ","))
     End If
 End Function
 %>
-
 <%
 '根据字典取名称
 
@@ -1397,7 +1412,6 @@ Function GetDictMC(sDM, sTABLE, sDefault)
         Application.Lock()
         Application(sTable) = aDict
         Application.UnLock()
-        Trace(aDict)
     Else
         aDict = Application(sTable)
         If UBound(aDict) <> 1 Then
@@ -1425,7 +1439,6 @@ Function GetDictDM(sDM, sTABLE, sDefault)
     ReDim aDict(0, -1)
     If Not IsArray(Application(sTable)) Then
         Set oDictRs = Exec("Select DM,MC From " & sTable)
-        Set oDictRs = Exec("Select DM,MC From " & sTable & " where 1=0 ")
         aDict = GetRsRows(oDictRs)
         Application.Lock()
         Application(sTable) = aDict
@@ -1489,7 +1502,6 @@ Function SelectOptions(sDict)
     sSql = "Select DM,MC From " & sDict & " Order By "
     If Not oRs(0) > 0 Then sSql = sSql & " Convert(int,DM) ASC, "
     sSql = sSql & "Dm ASC"
-    Trace(sSql)
     Set oRs = Exec(sSql)
     aRs = GetRsRows(oRs)
     For i = 0 To UBound(aRs, 2)
